@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 
 
 @Slf4j
-public class HelloServer {
+public class  HelloServer {
     private static final Logger logger = LoggerFactory.getLogger(HelloServer.class);
 
     public void start(int port) {
@@ -48,14 +48,14 @@ public class HelloServer {
         HelloServer helloServer = new HelloServer();
         helloServer.start(6666);
 
-        new Thread(() -> {
-            // 创建 socket 连接
-        }).start();
-
-        ThreadFactory threadFactory = Executors.defaultThreadFactory();
-        ExecutorService threadPool = new ThreadPoolExecutor(10, 100, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100), threadFactory);
-        threadPool.execute(() -> {
-            // 创建 socket 连接
-        });
+//        new Thread(() -> {
+//            // 创建 socket 连接
+//        }).start();
+//
+//        ThreadFactory threadFactory = Executors.defaultThreadFactory();
+//        ExecutorService threadPool = new ThreadPoolExecutor(10, 100, 1, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100), threadFactory);
+//        threadPool.execute(() -> {
+//            // 创建 socket 连接
+//        });
     }
 }
