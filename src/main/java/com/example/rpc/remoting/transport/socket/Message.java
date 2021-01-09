@@ -1,4 +1,4 @@
-package com.example.rpc.remoting.dto;
+package com.example.rpc.remoting.transport.socket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
