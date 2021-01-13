@@ -12,4 +12,27 @@ public class MyTest {
      return "Hello World" + myName;
     }
 
+    public static void main(String[] args) {
+//        UserInfo userInfo1 = new UserInfo();
+
+//
+//        userInfo1 = userInfo1.toBuilder().email("fafaf").build();
+//        System.out.println(userInfo1);
+
+        //新建
+        UserInfo userInfo = UserInfo.builder()
+                .name("HeSuiJin")
+                .address("GZ")
+                .build();
+        //修改
+        userInfo = userInfo.toBuilder()
+                .name("何穗金")
+                .address("广州")
+                .build();
+
+        System.out.println(userInfo);
+
+
+
+    }
 }
