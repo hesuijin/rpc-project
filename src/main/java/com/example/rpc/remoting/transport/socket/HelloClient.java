@@ -9,6 +9,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
+/**
+ * socket客户端
+ * @author HSJ
+ */
 public class HelloClient {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloClient.class);

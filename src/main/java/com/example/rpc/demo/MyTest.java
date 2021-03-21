@@ -13,11 +13,6 @@ public class MyTest {
     }
 
     public static void main(String[] args) {
-//        UserInfo userInfo1 = new UserInfo();
-
-//
-//        userInfo1 = userInfo1.toBuilder().email("fafaf").build();
-//        System.out.println(userInfo1);
 
         //新建
         UserInfo userInfo = UserInfo.builder()

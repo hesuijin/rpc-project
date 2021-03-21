@@ -14,9 +14,18 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.util.AttributeKey;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 客户端
+ * 主要有一个用于向服务端发送消息的sendMessage（）方法
+ * 通过该方法可以将消息也就是RpcRequest对象发送到服务端
+ * 并且可以同步获取服务端返回的结果也就是RpcResponse对象
+ * @author HSJ
+ */
+@Slf4j
 public class NettyClient {
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
     private final String host;
@@ -86,16 +95,5 @@ public class NettyClient {
         return null;
     }
 
-    //客户端启动
-    public static void main(String[] args) {
-        RpcRequest rpcRequest = RpcRequest.builder()
-                .interfaceName("interface")
-                .methodName("hello").build();
-        NettyClient nettyClient = new NettyClient("127.0.0.1", 8889);
-        for (int i = 0; i < 3; i++) {
-            nettyClient.sendMessage(rpcRequest);
-        }
-        RpcResponse rpcResponse = nettyClient.sendMessage(rpcRequest);
-        System.out.println(rpcResponse.toString());
-    }
+
 }

@@ -23,11 +23,11 @@ public class NettyServer {
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
     private final int port;
 
-    private NettyServer(int port) {
+    public NettyServer(int port) {
         this.port = port;
     }
 
-    private void run() {
+    public void run() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         KryoSerializer kryoSerializer = new KryoSerializer();
@@ -63,9 +63,6 @@ public class NettyServer {
         }
     }
 
-    //服务端启动
-    public static void main(String[] args) {
-        new NettyServer(8889).run();
-    }
+
 
 }

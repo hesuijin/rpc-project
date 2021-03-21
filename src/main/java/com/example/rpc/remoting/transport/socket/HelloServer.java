@@ -11,6 +11,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
+/**
+ * socket 服务端
+ * @author HSJ
+ */
 @Slf4j
 public class  HelloServer {
     private static final Logger logger = LoggerFactory.getLogger(HelloServer.class);

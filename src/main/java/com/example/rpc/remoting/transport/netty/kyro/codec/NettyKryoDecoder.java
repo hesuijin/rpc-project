@@ -11,9 +11,6 @@ import java.util.List;
 
 /**
  * 自定义解码器。负责处理"入站"消息，将消息格式转换为我们需要的业务对象
- *
- * @author shuang.kou
- * @createTime 2020年05月25日 19:42:00
  */
 @AllArgsConstructor
 @Slf4j

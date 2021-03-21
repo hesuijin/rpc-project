@@ -11,8 +11,8 @@ import lombok.Getter;
  * @Description:
  */
 @Builder(toBuilder = true)
-//@Getter
-//@Data
+@Getter
+@Data
 public class MyDTO {
 
     private String name;
