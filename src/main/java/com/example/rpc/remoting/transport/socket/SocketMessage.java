@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class Message implements Serializable {
+public class SocketMessage implements Serializable {
 
     private String content;
 }
