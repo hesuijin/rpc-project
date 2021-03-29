@@ -9,8 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+
 /**
- * 自定义解码器。负责处理"入站"消息，将消息格式转换为我们需要的业务对象
+ * @Description:
+ * NettyKryoDecoder自定义解码器。负责处理"入站"消息，
+ * 它会从BtyeBuf中读取到业务对象对应的字节序列
+ * 然后将字节序列转换为我们需要的业务对象
+ * @Author HeSuiJin
+ * @Date 2021/3/29
  */
 @AllArgsConstructor
 @Slf4j

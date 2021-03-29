@@ -5,10 +5,15 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.example.rpc.remoting.transport.netty.kyro.dto.RpcRequest;
 import com.example.rpc.remoting.transport.netty.kyro.dto.RpcResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-
+/**
+ * @Description: 实现序列化异常
+ * @Author HeSuiJin
+ * @Date 2021/3/28
+ */
 public class KryoSerializer implements Serializer {
     /**
      * 由于 Kryo 不是线程安全的。每个线程都应该有自己的 Kryo，Input 和 Output 实例。
@@ -39,18 +44,17 @@ public class KryoSerializer implements Serializer {
 
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-//        try (
+        try (
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-             Input input = new Input(byteArrayInputStream);
-//             {
+                Input input = new Input(byteArrayInputStream)) {
             Kryo kryo = kryoThreadLocal.get();
             // byte->Object:从byte数组中反序列化出对对象
             Object o = kryo.readObject(input, clazz);
             kryoThreadLocal.remove();
             return clazz.cast(o);
-//        } catch (Exception e) {
-//            throw new SerializeException("反序列化失败");
-//        }
+        } catch (Exception e) {
+            throw new SerializeException("反序列化失败");
+        }
     }
 
 

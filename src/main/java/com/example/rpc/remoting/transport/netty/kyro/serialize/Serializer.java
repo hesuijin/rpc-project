@@ -1,6 +1,11 @@
 package com.example.rpc.remoting.transport.netty.kyro.serialize;
 
-
+/**
+ * @Description:
+ * 自定义序列化接口
+ * @Author HeSuiJin
+ * @Date 2021/3/28
+ */
 public interface Serializer {
     /**
      * 序列化
