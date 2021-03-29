@@ -4,8 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * 自定义MyInvocationHandler类
- * @Description:
+ * @Description: 自定义MyInvocationHandler类
  * @Author HeSuiJin
  * @Date 2021/3/29
  */
