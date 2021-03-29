@@ -9,6 +9,6 @@ package com.example.rpc.remoting.transport.netty.kyro.server;
 public class NettyServerStart {
     //服务端启动
     public static void main(String[] args) {
-        new NettyServer(8889).run();
+        new NettyServer(8888).run();
     }
 }

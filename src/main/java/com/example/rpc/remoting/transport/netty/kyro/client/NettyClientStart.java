@@ -14,8 +14,9 @@ public class NettyClientStart {
     public static void main(String[] args) {
         RpcRequest rpcRequest = RpcRequest.builder()
                 .interfaceName("interface")
-                .methodName("hello").build();
-        NettyClient nettyClient = new NettyClient("127.0.0.1", 8889);
+                .methodName("你好啊").build();
+        //
+        NettyClient nettyClient = new NettyClient("127.0.0.1", 8888);
         for (int i = 0; i < 3; i++) {
             nettyClient.sendMessage(rpcRequest);
         }

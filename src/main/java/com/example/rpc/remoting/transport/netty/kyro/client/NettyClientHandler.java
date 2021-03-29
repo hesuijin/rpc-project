@@ -8,6 +8,15 @@ import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @Description:
+ * NettyClientHandler用户读取服务端发送过来的RpcResponse消息
+ * 并将RpcResponse消息对象保存到AttributeMap上
+ * AttributeMap可以看做是Channel的共享数据源；
+ * Netty 自定义 处理服务端消息处理
+ * @Author HeSuiJin
+ * @Date 2021/3/29
+ */
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
 
