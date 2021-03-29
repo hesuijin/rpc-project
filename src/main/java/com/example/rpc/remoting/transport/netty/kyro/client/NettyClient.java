@@ -33,7 +33,7 @@ public class NettyClient {
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
     private final String host;
     private final int port;
-    private static final Bootstrap b;
+    private static final Bootstrap bootStrap;
 
     public NettyClient(String host, int port) {
         this.host = host;
@@ -46,12 +46,12 @@ public class NettyClient {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         //2.创建客户端启动引导类：Bootstrap
-        b = new Bootstrap();
+        bootStrap = new Bootstrap();
 
         KryoSerializer kryoSerializer = new KryoSerializer();
 
         //3.指定线程组
-        b.group(eventLoopGroup)
+        bootStrap.group(eventLoopGroup)
 
                 //4.指定 IO 模型
                 .channel(NioSocketChannel.class)
@@ -85,9 +85,9 @@ public class NettyClient {
     public RpcResponse sendMessage(RpcRequest rpcRequest) {
         try {
 
-            // b = new Bootstrap(); 的相关参数以及逻辑已经初始化了
+            // bootStrap = new Bootstrap(); 的相关参数以及逻辑已经初始化了
             // 6.尝试建立连接
-            ChannelFuture f = b.connect(host, port).sync();
+            ChannelFuture f = bootStrap.connect(host, port).sync();
 
             logger.info("client connect  {}", host + ":" + port);
             Channel futureChannel = f.channel();
