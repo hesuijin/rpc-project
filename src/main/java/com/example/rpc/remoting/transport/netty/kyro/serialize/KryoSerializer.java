@@ -28,6 +28,11 @@ public class KryoSerializer implements Serializer {
         return kryo;
     });
 
+    /**
+     * 序列化
+     * @param obj 要序列化的对象
+     * @return
+     */
     @Override
     public byte[] serialize(Object obj) {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -42,6 +47,13 @@ public class KryoSerializer implements Serializer {
         }
     }
 
+    /**
+     * 反序列化
+     * @param bytes 序列化后的字节数组
+     * @param clazz 类
+     * @param <T>
+     * @return
+     */
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         try (
