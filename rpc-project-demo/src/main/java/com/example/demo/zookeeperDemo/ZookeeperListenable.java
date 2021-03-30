@@ -16,19 +16,17 @@ public class ZookeeperListenable {
 
 
     public void nodeListen(CuratorFramework zkClient) throws Exception {
-
+        //监听 该节点 /node1
         String nodePath = "/node1";
         //cacheData的 true 和 false
         PathChildrenCache pathChildrenCache = new PathChildrenCache(zkClient, nodePath, true);
         PathChildrenCacheListener pathChildrenCacheListener = (curatorFramework, pathChildrenCacheEvent) -> {
-
             log.info("你好啊  我是{}的子节点，我刚刚进行了 {} 操作",nodePath,pathChildrenCacheEvent.getType());
-            //开启针对某个节点的监听器 当这个节点的子节点发生变化  新增 删除 修改时 自定义操作
 
+            //开启针对某个节点的监听器 当这个节点的子节点发生变化  新增 删除 修改时 自定义操作
             if(PathChildrenCacheEvent.Type.CHILD_UPDATED .equals( pathChildrenCacheEvent.getType() )) {
                // do something
            }
-
         };
         pathChildrenCache.getListenable().addListener(pathChildrenCacheListener);
         pathChildrenCache.start();
@@ -48,6 +46,5 @@ public class ZookeeperListenable {
 //        CONNECTION_LOST,
 //
 //        INITIALIZED;
-
 
 }
