@@ -58,12 +58,17 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--        引入lombok 使用@Data注解-->
+        <!--        引入lombok 使用@Data注解 使用@Slf4j注解 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
+        <!--        引入fastjson  打印日志-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
 <!--        &lt;!&ndash;        slf4j:Simple Logging Facade for Java&ndash;&gt;-->
 <!--        &lt;!&ndash;        slf4j-api slf4j的接口类 &ndash;&gt;-->
 <!--        <dependency>-->
@@ -96,6 +101,16 @@
             <version>3.3.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>4.2.0</version>
+        </dependency>
     </dependencies>
 
     <!--编译-->
