@@ -1,4 +1,4 @@
-package com.example.demo.registry.zookeeper.ServiceRegistry;
+package com.example.demo.registryCenter.zookeeper.ServiceRegistry;
 
 import java.net.InetSocketAddress;
 

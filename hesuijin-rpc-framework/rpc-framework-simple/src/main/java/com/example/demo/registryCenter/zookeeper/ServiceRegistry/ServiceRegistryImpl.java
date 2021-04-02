@@ -1,7 +1,4 @@
-package com.example.demo.registry.zookeeper.ServiceRegistry;
-
-import com.example.demo.registry.zookeeper.CuratorUtils;
-import org.apache.curator.framework.CuratorFramework;
+package com.example.demo.registryCenter.zookeeper.ServiceRegistry;
 
 import java.net.InetSocketAddress;
 

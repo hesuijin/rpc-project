@@ -1,4 +1,4 @@
-package com.example.demo.registry.zookeeper;
+package com.example.demo.registryCenter.zookeeper;
 
 import com.example.common.enums.RpcConfigEnum;
 import com.example.common.utils.PropertiesFileUtil;
@@ -81,7 +81,7 @@ public class CuratorUtils {
     }
 
     /**
-     * 获取子节点
+     *  获取rpcServiceName 下所有子节点的路径
      *
      * @param zkClient
      * @param rpcServiceName
