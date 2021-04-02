@@ -3,11 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.example</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>hesuijin-rpc-framework</artifactId>
+    </parent>
+
     <groupId>com.example</groupId>
     <artifactId>rpc-framework-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>rpc-framework-common</name>
     <description>rpc-framework-common project for Spring Boot</description>
-
 
 </project>
