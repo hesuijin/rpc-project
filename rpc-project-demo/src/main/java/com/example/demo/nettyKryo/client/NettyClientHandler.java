@@ -1,6 +1,6 @@
-package com.example.demo.nettyKyro.client;
+package com.example.demo.nettyKryo.client;
 
-import com.example.demo.nettyKyro.dto.RpcResponse;
+import com.example.demo.nettyKryo.dto.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;

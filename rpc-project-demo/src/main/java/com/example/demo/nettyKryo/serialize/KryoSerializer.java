@@ -1,9 +1,9 @@
-package com.example.demo.nettyKyro.serialize;
+package com.example.demo.nettyKryo.serialize;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.example.demo.nettyKyro.dto.*;
+import com.example.demo.nettyKryo.dto.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

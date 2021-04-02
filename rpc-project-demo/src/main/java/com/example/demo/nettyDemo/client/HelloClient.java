@@ -10,7 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * @Description:  nettyKyro 客户端
+ * @Description:  nettyKryo 客户端
  * @Author HeSuiJin
  * @Date 2021/3/29
  */

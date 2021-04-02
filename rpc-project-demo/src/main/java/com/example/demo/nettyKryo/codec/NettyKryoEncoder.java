@@ -1,7 +1,7 @@
-package com.example.demo.nettyKyro.codec;
+package com.example.demo.nettyKryo.codec;
 
 
-import com.example.demo.nettyKyro.serialize.Serializer;
+import com.example.demo.nettyKryo.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

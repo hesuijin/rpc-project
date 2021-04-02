@@ -1,6 +1,6 @@
-package com.example.demo.nettyKyro.server;
+package com.example.demo.nettyKryo.server;
 
-import com.example.demo.nettyKyro.dto.*;
+import com.example.demo.nettyKryo.dto.*;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

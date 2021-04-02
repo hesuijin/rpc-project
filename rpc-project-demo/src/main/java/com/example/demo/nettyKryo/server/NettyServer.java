@@ -1,9 +1,9 @@
-package com.example.demo.nettyKyro.server;
+package com.example.demo.nettyKryo.server;
 
-import com.example.demo.nettyKyro.codec.NettyKryoDecoder;
-import com.example.demo.nettyKyro.codec.NettyKryoEncoder;
-import com.example.demo.nettyKyro.dto.*;
-import com.example.demo.nettyKyro.serialize.KryoSerializer;
+import com.example.demo.nettyKryo.codec.NettyKryoDecoder;
+import com.example.demo.nettyKryo.codec.NettyKryoEncoder;
+import com.example.demo.nettyKryo.dto.*;
+import com.example.demo.nettyKryo.serialize.KryoSerializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

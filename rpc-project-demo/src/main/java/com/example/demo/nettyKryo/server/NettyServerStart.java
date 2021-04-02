@@ -1,4 +1,4 @@
-package com.example.demo.nettyKyro.server;
+package com.example.demo.nettyKryo.server;
 
 /**
  * Netty 服务端启动类

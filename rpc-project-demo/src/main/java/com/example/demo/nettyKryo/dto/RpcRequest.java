@@ -1,4 +1,4 @@
-package com.example.demo.nettyKyro.dto;
+package com.example.demo.nettyKryo.dto;
 
 import lombok.*;
 

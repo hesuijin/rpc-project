@@ -1,7 +1,7 @@
-package com.example.demo.nettyKyro.client;
+package com.example.demo.nettyKryo.client;
 
-import com.example.demo.nettyKyro.dto.RpcRequest;
-import com.example.demo.nettyKyro.dto.RpcResponse;
+import com.example.demo.nettyKryo.dto.RpcRequest;
+import com.example.demo.nettyKryo.dto.RpcResponse;
 
 /**
  * @Author HeSuiJin
