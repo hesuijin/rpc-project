@@ -9,5 +9,9 @@ import java.net.InetSocketAddress;
  */
 public interface ServiceRegistry {
 
+    /**
+     * @param rpcServiceName
+     * @param inetSocketAddress
+     */
     void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress);
 }

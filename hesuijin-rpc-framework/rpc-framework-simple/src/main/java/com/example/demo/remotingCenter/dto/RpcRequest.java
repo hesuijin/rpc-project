@@ -1,4 +1,4 @@
-package com.example.demo.remoting.dto;
+package com.example.demo.remotingCenter.dto;
 
 import com.example.common.entity.RpcServiceProperties;
 import lombok.Data;
