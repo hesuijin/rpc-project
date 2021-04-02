@@ -41,7 +41,6 @@ public class SocketRpcClient implements RpcRequestTransport {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             //发出 请求
             objectOutputStream.writeObject(rpcRequest);
-
             //生成输入流
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             //获取 响应
