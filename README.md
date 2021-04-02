@@ -8,7 +8,7 @@
 ***
 
 #### 简书个人技术文章
- [与该项目相关的笔记 个人整理并发布到简书](https://www.jianshu.com/nb/49066395)
+ [个人已经整理并发布的该项目相关的笔记 （简书）](https://www.jianshu.com/nb/49066395)
  
  [Netty框架前置学习](https://www.jianshu.com/nb/49815762)
  
