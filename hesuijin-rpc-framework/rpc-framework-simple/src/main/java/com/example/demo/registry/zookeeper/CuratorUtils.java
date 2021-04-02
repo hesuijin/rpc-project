@@ -34,6 +34,7 @@ public class CuratorUtils {
     //注册根路径地址
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
 
+    //服务节点名称为rpcServiceName 下的子节点   /my-rpc/rpcServiceName
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 
@@ -53,7 +54,9 @@ public class CuratorUtils {
             return zkClient;
         }
 
-        // 相应的资源（包括路径）
+        // 获取相应的静态资源
+        // 如果有相关的Zookeeper静态资源在配置文件 则使用里面的连接地址
+        // 否则 使用默认的连接地址
         Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
         //获取连接地址
         String zookeeperAddress = properties != null && properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) != null ? properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) : DEFAULT_ZOOKEEPER_ADDRESS;
