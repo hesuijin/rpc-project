@@ -48,7 +48,7 @@ public class ZookeeperDemo {
      * @param zkClient
      * @throws Exception
      */
-    public  void getChildNode(CuratorFramework zkClient) throws Exception {
+    public void getChildNode(CuratorFramework zkClient) throws Exception {
         //获取某个节点的所有子节点路径
         List<String> childrenPaths = zkClient.getChildren().forPath("/node1");
         log.info("该节点的所有子节点：{}", JSONObject.toJSONString(childrenPaths));

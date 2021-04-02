@@ -43,12 +43,12 @@ public class Main {
 //            zookeeperDemo.createTest(zkClient);
 
             //获取 某节点下的所有子节点 测试
-//            zookeeperDemo.getChildNode(zkClient);
+            zookeeperDemo.getChildNode(zkClient);
             //获取 某节点下的关联数据 测试
 //            zookeeperDemo.getDatabyNode(zkClient,"/node1");
 
             //修改 某节点下的关联数据 测试
-            zookeeperDemo.setTest(zkClient);
+//            zookeeperDemo.setTest(zkClient);
 
             //删除测试
 //            zookeeperDemo.deleteTest(zkClient);

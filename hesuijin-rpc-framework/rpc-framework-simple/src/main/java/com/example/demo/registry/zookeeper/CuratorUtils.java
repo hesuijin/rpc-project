@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description:
+ * @Description: 注意 请先查看 Zookeeper的相关知识点  结构为树  以node节点组成 （key:value）（路径：值）
  * CuratorUtils 工具类 可以查看zookeeperDemo里面的相关方法
  * @Author HeSuiJin
  * @Date 2021/4/2
@@ -72,13 +72,14 @@ public class CuratorUtils {
                 throw new RuntimeException("等待连接Zookeeper超时");
             }
         } catch (InterruptedException e) {
-           log.info("获取ZkClient异常"+e.getMessage(),e);
+            log.info("获取ZkClient异常" + e.getMessage(), e);
         }
         return zkClient;
     }
 
     /**
      * 获取子节点
+     *
      * @param zkClient
      * @param rpcServiceName
      * @return
@@ -90,8 +91,10 @@ public class CuratorUtils {
         List<String> result = null;
         String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
         try {
+            //获取该节点的所有子节点路径 并 返回
             result = zkClient.getChildren().forPath(servicePath);
             SERVICE_ADDRESS_MAP.put(rpcServiceName, result);
+            //注册监听
             registerWatcher(rpcServiceName, zkClient);
         } catch (Exception e) {
             log.error("get children nodes for path [{}] fail", servicePath);
@@ -101,12 +104,19 @@ public class CuratorUtils {
 
     private static void registerWatcher(String rpcServiceName, CuratorFramework zkClient) throws Exception {
         String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
+
+        //生成监听器 当servicePath的子节点发生改变的时候 执行逻辑
         PathChildrenCache pathChildrenCache = new PathChildrenCache(zkClient, servicePath, true);
         PathChildrenCacheListener pathChildrenCacheListener = (curatorFramework, pathChildrenCacheEvent) -> {
+            //当字节点发生改变时
+            //获取该节点的所有子节点路径  并添加到  这个节点处为key值的 map集合中
             List<String> serviceAddresses = curatorFramework.getChildren().forPath(servicePath);
             SERVICE_ADDRESS_MAP.put(rpcServiceName, serviceAddresses);
         };
+
+        //pathChildrenCacheListener 加入到pathChildrenCache中
         pathChildrenCache.getListenable().addListener(pathChildrenCacheListener);
+        //监听器开始运行
         pathChildrenCache.start();
     }
 }
