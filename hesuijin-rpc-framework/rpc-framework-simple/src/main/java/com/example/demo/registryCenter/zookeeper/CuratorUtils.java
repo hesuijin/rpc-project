@@ -21,6 +21,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Description: 注意 请先查看 Zookeeper的相关知识点  结构为树  以node节点组成 （key:value）（路径：值）
  * CuratorUtils 工具类 可以查看zookeeperDemo里面的相关方法
+ *
+ *  1：生成zkClient
+*   2：获取rpcServiceClassName 下的所有子节点
+*      rpcServiceClassName ：包含className（interfaceName）服务接口名称 com.example.demo.HelloService
+*      子节点 ：  服务端注册到Zookeeper的IP+端口号  127.0.0.1:1   127.0.0.1:2  127.0.0.1:3
+ *   3：当rpcServiceClassName 新增子节点时  该节点注册到rpcServiceClassName下面
+ *
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
@@ -34,7 +41,7 @@ public class CuratorUtils {
     //注册根路径地址
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
 
-    //服务节点名称为rpcServiceName 下的子节点   /my-rpc/rpcServiceName
+    //服务节点名称为rpcServiceClassName 下的子节点   /my-rpc/rpcServiceClassName
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 
@@ -81,32 +88,32 @@ public class CuratorUtils {
     }
 
     /**
-     *  获取rpcServiceName 下所有子节点的路径
+     *  获取rpcServiceClassName 下所有子节点的路径
      *
      * @param zkClient
-     * @param rpcServiceName
+     * @param rpcServiceClassName
      * @return
      */
-    public static List<String> getChildrenNodes(CuratorFramework zkClient, String rpcServiceName) {
-        if (SERVICE_ADDRESS_MAP.containsKey(rpcServiceName)) {
-            return SERVICE_ADDRESS_MAP.get(rpcServiceName);
+    public static List<String> getChildrenNodes(CuratorFramework zkClient, String rpcServiceClassName) {
+        if (SERVICE_ADDRESS_MAP.containsKey(rpcServiceClassName)) {
+            return SERVICE_ADDRESS_MAP.get(rpcServiceClassName);
         }
         List<String> result = null;
-        String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
+        String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceClassName;
         try {
             //获取该节点的所有子节点路径 并 返回
             result = zkClient.getChildren().forPath(servicePath);
-            SERVICE_ADDRESS_MAP.put(rpcServiceName, result);
+            SERVICE_ADDRESS_MAP.put(rpcServiceClassName, result);
             //注册监听
-            registerWatcher(rpcServiceName, zkClient);
+            registerWatcher(rpcServiceClassName, zkClient);
         } catch (Exception e) {
             log.error("get children nodes for path [{}] fail", servicePath);
         }
         return result;
     }
 
-    private static void registerWatcher(String rpcServiceName, CuratorFramework zkClient) throws Exception {
-        String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName;
+    private static void registerWatcher(String rpcServiceClassName, CuratorFramework zkClient) throws Exception {
+        String servicePath = ZK_REGISTER_ROOT_PATH + "/" + rpcServiceClassName;
 
         //生成监听器 当servicePath的子节点发生改变的时候 执行逻辑
         PathChildrenCache pathChildrenCache = new PathChildrenCache(zkClient, servicePath, true);
@@ -114,7 +121,7 @@ public class CuratorUtils {
             //当字节点发生改变时
             //获取该节点的所有子节点路径  并添加到  这个节点处为key值的 map集合中
             List<String> serviceAddresses = curatorFramework.getChildren().forPath(servicePath);
-            SERVICE_ADDRESS_MAP.put(rpcServiceName, serviceAddresses);
+            SERVICE_ADDRESS_MAP.put(rpcServiceClassName, serviceAddresses);
         };
 
         //pathChildrenCacheListener 加入到pathChildrenCache中

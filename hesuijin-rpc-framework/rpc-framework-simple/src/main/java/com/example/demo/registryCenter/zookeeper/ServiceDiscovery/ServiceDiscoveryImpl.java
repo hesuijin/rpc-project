@@ -26,17 +26,21 @@ public class ServiceDiscoveryImpl implements ServiceDiscovery{
     }
 
     @Override
-    public InetSocketAddress lookupService(String rpcServiceName) {
+    public InetSocketAddress lookupService(String rpcServiceClassName) {
 
-        //获取Zookeeper客户端
+        //1：获取Zookeeper客户端
         CuratorFramework zkClient = CuratorUtils.getZkClient();
-        //获取rpcServiceName 下所有子节点的路径
-        List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, rpcServiceName);
+
+        // 2：获取rpcServiceClassName 下的所有子节点
+        //      rpcServiceClassName ：包含className（interfaceName）服务接口名称 com.example.demo.HelloService
+        //      子节点 ：  服务端注册到Zookeeper的IP+端口号  127.0.0.1:1   127.0.0.1:2  127.0.0.1:3
+        List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, rpcServiceClassName);
         if (serviceUrlList == null || serviceUrlList.size() == 0) {
-            throw new RpcException(RpcErrorMessageEnum.SERVICE_CAN_NOT_BE_FOUND, rpcServiceName);
+            throw new RpcException(RpcErrorMessageEnum.SERVICE_CAN_NOT_BE_FOUND, rpcServiceClassName);
         }
-        //负载均衡策略  所有字节点路径
-        String targetServiceUrl = loadBalance.selectServiceAddress(serviceUrlList, rpcServiceName);
+
+        //3：负载均衡策略  选取其中一个子节点  （即拿到对应的 IP：端口号）
+        String targetServiceUrl = loadBalance.selectServiceAddress(serviceUrlList, rpcServiceClassName);
         log.info("Successfully found the service address:[{}]", targetServiceUrl);
         //进行截取
         String[] socketAddressArray = targetServiceUrl.split(":");

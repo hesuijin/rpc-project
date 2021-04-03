@@ -29,11 +29,13 @@ public class SocketRpcClient implements RpcRequestTransport {
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
 
-        //生成inetSocketAddress地址
-        String rpcServiceName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
+
+        // rpcServiceClassName ：包含className（interfaceName）服务接口名称 com.example.demo.HelloService
+        String rpcServiceClassName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
                 .group(rpcRequest.getGroup()).version(rpcRequest.getVersion()).build().toRpcServiceName();
-        //使用Zookeeper注册
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);
+        //使用Zookeeper发现
+        //获取请求的 服务端  （该服务端有对象的请求接口）
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceClassName);
 
         try (Socket socket = new Socket()) {
             socket.connect(inetSocketAddress);
