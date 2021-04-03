@@ -23,8 +23,6 @@ public class CustomThreadPoolConfig {
     private static final int DEFAULT_KEEP_ALIVE_TIME = 1;
     private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MINUTES;
 
-    private static final int DEFAULT_BLOCKING_QUEUE_CAPACITY = 100;
-//    private static final int BLOCKING_QUEUE_CAPACITY = 100;
 
     /**
      * 可配置参数
@@ -35,5 +33,6 @@ public class CustomThreadPoolConfig {
     private TimeUnit unit = DEFAULT_TIME_UNIT;
 
     // 使用有界队列
+    private static final int DEFAULT_BLOCKING_QUEUE_CAPACITY = 100;
     private BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(DEFAULT_BLOCKING_QUEUE_CAPACITY);
 }
