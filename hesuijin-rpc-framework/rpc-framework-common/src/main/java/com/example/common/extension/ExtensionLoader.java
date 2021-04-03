@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @Date 2021/4/2
  */
 @Slf4j
+//TODO 读取配置文件理解
 public class ExtensionLoader<T> {
 
     private static final String SERVICE_DIRECTORY = "META-INF/extensions/";

@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2021/4/2
  */
 
- // TODO  参考阿里的 Dubbo Hash一致性 负载均衡策略
+ // TODO  参考阿里的 Dubbo Hash一致性 负载均衡策略 理解
 //public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
 public class ConsistentHashLoadBalance  {

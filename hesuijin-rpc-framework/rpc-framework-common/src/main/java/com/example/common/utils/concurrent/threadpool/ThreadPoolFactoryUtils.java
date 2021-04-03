@@ -34,6 +34,7 @@ public class ThreadPoolFactoryUtils {
     public static ThreadPoolExecutor createCustomThreadPoolIfAbsent(String threadNamePrefix) {
         CustomThreadPoolConfig customThreadPoolConfig = new CustomThreadPoolConfig();
         //设置 为非守护线程池
+        //TODO 设置为非守护线程理解
         return createCustomThreadPoolIfAbsent(customThreadPoolConfig, threadNamePrefix, false);
     }
 
