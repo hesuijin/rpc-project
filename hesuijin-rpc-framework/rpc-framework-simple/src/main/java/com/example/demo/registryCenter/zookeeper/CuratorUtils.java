@@ -11,6 +11,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -128,5 +129,23 @@ public class CuratorUtils {
         pathChildrenCache.getListenable().addListener(pathChildrenCacheListener);
         //监听器开始运行
         pathChildrenCache.start();
+    }
+
+    /**
+     * 删除zkClient 下面该服务 的所有数据
+     */
+    public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
+        //REGISTERED_PATH_SET集合  对 inetSocketAddress 名称进行遍历
+        // TODO 为什么是对inetSocketAddress 该名称
+        REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
+            try {
+                if (p.endsWith(inetSocketAddress.toString())) {
+                    zkClient.delete().forPath(p);
+                }
+            } catch (Exception e) {
+                log.error("clear registry for path [{}] fail", p);
+            }
+        });
+        log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET.toString());
     }
 }
