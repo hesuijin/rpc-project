@@ -29,7 +29,6 @@ public class SocketRpcClient implements RpcRequestTransport {
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
 
-
         // rpcServiceClassName ：包含className（interfaceName）服务接口名称 com.example.demo.HelloService
         String rpcServiceClassName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
                 .group(rpcRequest.getGroup()).version(rpcRequest.getVersion()).build().toRpcServiceName();
