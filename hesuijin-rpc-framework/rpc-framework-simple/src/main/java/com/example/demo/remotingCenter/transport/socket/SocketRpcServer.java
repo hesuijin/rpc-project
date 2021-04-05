@@ -32,8 +32,8 @@ public class SocketRpcServer {
         serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);
     }
 
-    public void registerService(Object service, RpcServiceProperties rpcServiceProperties) {
-        serviceProvider.publishService(service, rpcServiceProperties);
+    public void registerService(Object serviceImplObject, RpcServiceProperties rpcServiceProperties) {
+        serviceProvider.publishService(serviceImplObject, rpcServiceProperties);
     }
 
     public void start() {

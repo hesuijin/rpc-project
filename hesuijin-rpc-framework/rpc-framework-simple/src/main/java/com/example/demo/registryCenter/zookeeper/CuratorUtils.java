@@ -134,18 +134,18 @@ public class CuratorUtils {
 
 
     /**
-     * 注册一个持久化节点   该节点路径 ： Zk根路径/接口名称/IP地址
+     * 注册一个持久化节点   该节点路径 ：
      * @param zkClient
      * @param path
      */
     public static void createPersistentNode(CuratorFramework zkClient, String path) {
         try {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
-                log.info("The node already exists. The node is:[{}]", path);
+                log.info("该节点已经存在 该节点是 :[{}]", path);
             } else {
                 //eg: /my-rpc/github.javaguide.HelloService/127.0.0.1:9999
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
-                log.info("The node was created successfully. The node is:[{}]", path);
+                log.info("该节点已经完成创建 该节点是:[{}]", path);
             }
             REGISTERED_PATH_SET.add(path);
         } catch (Exception e) {
@@ -157,11 +157,11 @@ public class CuratorUtils {
      * 删除zkClient 下面该服务 的所有数据
      */
     public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
-        //REGISTERED_PATH_SET集合  对 inetSocketAddress 名称进行遍历
-        // TODO 为什么是对inetSocketAddress 该名称
+        //REGISTERED_PATH_SET集合  对 inetSocketAddress 名称（/127.0.0.1:9999）进行遍历
         REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
             try {
                 if (p.endsWith(inetSocketAddress.toString())) {
+                    //
                     zkClient.delete().forPath(p);
                 }
             } catch (Exception e) {

@@ -29,6 +29,7 @@ public class CustomShutdownHook {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), SocketRpcServer.PORT);
+                //清除 zk 中该 服务存在的节点
                 CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
             } catch (UnknownHostException ignored) {
             }

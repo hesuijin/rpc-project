@@ -11,11 +11,10 @@ import com.example.common.entity.RpcServiceProperties;
 public interface ServiceProvider {
 
     /**
-     * @param service              service object
-     * @param serviceClass         the interface class implemented by the service instance object
-     * @param rpcServiceProperties service related attributes
+     * @param service              serviceImplObject
+     * @param rpcServiceName service related attributes
      */
-    void addService(Object service, Class<?> serviceClass, RpcServiceProperties rpcServiceProperties);
+    void addService(Object service,  String rpcServiceName);
 
     /**
      * @param rpcServiceProperties service related attributes

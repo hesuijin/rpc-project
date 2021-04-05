@@ -19,6 +19,11 @@ public class ServiceRegistryImpl implements ServiceRegistry {
      */
     @Override
     public void registerService(String rpcServiceName, InetSocketAddress inetSocketAddress) {
+
+        //构造将要新增的节点地址
+        //入参1：接口所在包加名称          interface com.example.api.HelloService
+        //入参2：斜杆+本机公网地址+端口号  /192.168.137.1:9998
+        //    /my-rpc/interface com.example.api.HelloService/192.168.137.1:9998
         String servicePath = CuratorUtils.ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName + inetSocketAddress.toString();
         CuratorFramework zkClient = CuratorUtils.getZkClient();
         CuratorUtils.createPersistentNode(zkClient, servicePath);
