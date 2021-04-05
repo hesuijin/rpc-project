@@ -47,7 +47,7 @@ public class ServiceProviderImpl implements ServiceProvider{
      * 1：构造rpcServiceName   接口所在包 加 名称  com.example.api.HelloService (可能需要加上分组或者版本号)
      * 2：构造inetSocketAddress  斜杆+本机公网地址+端口号  /192.168.137.1:9998
      * 3：使用以上参数 在 zk中注册节点
-     * 4：在本类中使用set集合 与hash集合 记录本次新增的   接口实现类的对象 接口所在包 + 名称
+     * 4：在本类中使用set集合 与hash集合 记录本次新增的   接口实现类的对象  与  接口所在包 + 名称
      *
      * @param serviceImplObject              接口实现类的对象
      * @param rpcServiceProperties service related attributes
