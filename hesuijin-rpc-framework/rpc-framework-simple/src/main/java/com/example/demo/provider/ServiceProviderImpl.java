@@ -95,16 +95,5 @@ public class ServiceProviderImpl implements ServiceProvider{
         log.info("Add service: {} and interfaces:{}", rpcServiceName, serviceImplObject.getClass().getInterfaces());
     }
 
-    public static void main(String[] args) throws UnknownHostException {
-        String host = InetAddress.getLocalHost().getHostAddress();
-        System.out.println(host);
 
-        System.out.println( new InetSocketAddress(host, SocketRpcServer.PORT));
-
-        myTest myTest1 =new myTestImp();
-        Class<?> serviceRelatedInterface = myTest1.getClass().getInterfaces()[0];
-        String serviceName = serviceRelatedInterface.getCanonicalName();
-        System.out.println(serviceRelatedInterface);
-        System.out.println(serviceName);
-    }
 }

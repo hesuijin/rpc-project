@@ -92,19 +92,33 @@ public class ThreadPoolFactoryUtils {
 
 
     /**
-     * shutDown 所有线程池
+     * shutdown方法：平滑的关闭ExecutorService，当此方法被调用时，
+     * ExecutorService停止接收新的任务并且等待已经提交的任务（包含提交正在执行和提交未执行）执行完成。
+     * 当所有提交任务执行完毕，线程池即被关闭。
+     *
+     * awaitTermination方法：接收人timeout和TimeUnit两个参数，用于设定超时时间及单位。
+     * 当等待超过设定时间时，会监测ExecutorService是否已经关闭，若关闭则返回true，否则返回false。
+     * 一般情况下会和shutdown方法组合使用。
+     *
+     * shutdownNow()：直接关闭 停止当前的任务
      */
     public static void shutDownAllThreadPool() {
-        log.info("call shutDownAllThreadPool method");
+        log.info("进行关闭所有线程池操作 ");
         THREAD_POOLS.entrySet().parallelStream().forEach(entry -> {
             ExecutorService executorService = entry.getValue();
             executorService.shutdown();
-            log.info("shut down thread pool [{}] [{}]", entry.getKey(), executorService.isTerminated());
+            log.info("平滑 关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
+            boolean isFinishShutdown = false;
             try {
-                executorService.awaitTermination(10, TimeUnit.SECONDS);
+                isFinishShutdown= executorService.awaitTermination(20, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                log.error("Thread pool never terminated");
+                log.error("线程池没有被关闭，需要立即执行关闭线程池 ");
+            }
+
+            //shutdown关闭失败  或者  awaitTermination 异常都执行立即关闭命令
+            if (!isFinishShutdown ){
                 executorService.shutdownNow();
+                log.info("立即  关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
             }
         });
     }

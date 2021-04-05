@@ -9,10 +9,7 @@ import com.example.demo.provider.ServiceProviderImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -32,6 +29,11 @@ public class SocketRpcServer {
         serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);
     }
 
+    /**
+     * //注册接口到 zk中 的详细逻辑
+     * @param serviceImplObject
+     * @param rpcServiceProperties
+     */
     public void registerService(Object serviceImplObject, RpcServiceProperties rpcServiceProperties) {
         serviceProvider.publishService(serviceImplObject, rpcServiceProperties);
     }
@@ -47,11 +49,15 @@ public class SocketRpcServer {
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
                 //TODO 待补充
-//                threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
+                threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
             threadPool.shutdown();
         } catch (IOException e) {
             log.error("occur IOException:", e);
         }
+    }
+
+    public static void main(String[] args) throws UnknownHostException {
+        System.out.println(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), PORT));
     }
 }

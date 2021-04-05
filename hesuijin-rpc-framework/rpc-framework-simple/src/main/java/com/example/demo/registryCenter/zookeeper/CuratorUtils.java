@@ -43,7 +43,6 @@ public class CuratorUtils {
     //注册根路径地址
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
 
-    //服务节点名称为rpcServiceClassName 下的子节点   /my-rpc/rpcServiceClassName
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 
@@ -134,7 +133,7 @@ public class CuratorUtils {
 
 
     /**
-     * 注册一个持久化节点   该节点路径 ：
+     * 注册一个持久化节点   该节点路径 ： /my-rpc/com.example.api.HelloService/192.168.137.1:9998
      * @param zkClient
      * @param path
      */
@@ -143,7 +142,7 @@ public class CuratorUtils {
             if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
                 log.info("该节点已经存在 该节点是 :[{}]", path);
             } else {
-                //eg: /my-rpc/github.javaguide.HelloService/127.0.0.1:9999
+               // /my-rpc/com.example.api.HelloService/192.168.137.1:9998
                 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(path);
                 log.info("该节点已经完成创建 该节点是:[{}]", path);
             }
@@ -157,17 +156,17 @@ public class CuratorUtils {
      * 删除zkClient 下面该服务 的所有数据
      */
     public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
-        //REGISTERED_PATH_SET集合  对 inetSocketAddress 名称（/127.0.0.1:9999）进行遍历
+        //REGISTERED_PATH_SET集合  对 inetSocketAddress /192.168.137.1:9998  进行遍历
         REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
             try {
                 if (p.endsWith(inetSocketAddress.toString())) {
-                    //
+                    //如果存在 p的部分等于  inetSocketAddress  那么删除这个单个节点
                     zkClient.delete().forPath(p);
                 }
             } catch (Exception e) {
-                log.error("clear registry for path [{}] fail", p);
+                log.error("清除该节点 [{}] 失败 ", p);
             }
         });
-        log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET.toString());
+        log.info("该服务器在zk的所有解决已经被清除:[{}]", REGISTERED_PATH_SET.toString());
     }
 }
