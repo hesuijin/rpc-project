@@ -14,7 +14,6 @@
     <name>hesuijin-rpc-framework</name>
     <description>hesuijin-rpc-framework project for Spring Boot</description>
 
-
     <modules>
         <module>rpc-framework-simple</module>
         <module>hello-service-api</module>

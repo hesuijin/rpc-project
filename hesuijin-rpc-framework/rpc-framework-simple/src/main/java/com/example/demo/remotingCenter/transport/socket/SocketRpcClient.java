@@ -2,6 +2,7 @@ package com.example.demo.remotingCenter.transport.socket;
 
 import com.example.common.entity.RpcServiceProperties;
 import com.example.common.exception.RpcException;
+import com.example.common.extension.ExtensionLoader;
 import com.example.demo.registryCenter.zookeeper.ServiceDiscovery.ServiceDiscovery;
 import com.example.demo.remotingCenter.dto.RpcRequest;
 import com.example.demo.remotingCenter.transport.RpcRequestTransport;
@@ -25,6 +26,10 @@ import java.net.Socket;
 public class SocketRpcClient implements RpcRequestTransport {
 
     private final ServiceDiscovery serviceDiscovery;
+
+    public SocketRpcClient() {
+        this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("zk");
+    }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {

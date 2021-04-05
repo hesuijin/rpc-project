@@ -1,5 +1,6 @@
 package com.example.demo.remotingCenter.transport.socket;
 
+import com.example.common.entity.RpcServiceProperties;
 import com.example.common.factory.SingletonFactory;
 import com.example.common.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import com.example.demo.config.CustomShutdownHook;
@@ -29,6 +30,10 @@ public class SocketRpcServer {
     public SocketRpcServer() {
         threadPool = ThreadPoolFactoryUtils.createCustomThreadPoolIfAbsent("socket-server-rpc-pool");
         serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);
+    }
+
+    public void registerService(Object service, RpcServiceProperties rpcServiceProperties) {
+        serviceProvider.publishService(service, rpcServiceProperties);
     }
 
     public void start() {

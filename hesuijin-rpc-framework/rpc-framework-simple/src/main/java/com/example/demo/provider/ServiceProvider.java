@@ -29,9 +29,6 @@ public interface ServiceProvider {
      */
     void publishService(Object service, RpcServiceProperties rpcServiceProperties);
 
-    /**
-     * @param service service object
-     */
-    void publishService(Object service);
+
 
 }
