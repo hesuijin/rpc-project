@@ -57,7 +57,4 @@ public class SocketRpcServer {
         }
     }
 
-    public static void main(String[] args) throws UnknownHostException {
-        System.out.println(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), PORT));
-    }
 }
