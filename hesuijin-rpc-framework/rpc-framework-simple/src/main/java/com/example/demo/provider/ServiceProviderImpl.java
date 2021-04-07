@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ServiceProviderImpl implements ServiceProvider{
 
-
     // com.example.api.HelloService  serviceImplObject   存放在 hash集合 serviceMap 中
     private final Map<String, Object> serviceMap;
     // com.example.api.HelloService     存放在 set集合 registeredService 中

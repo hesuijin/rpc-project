@@ -1,1 +1,1 @@
-zk=com.example.demo.registryCenter.zookeeper.ServiceDiscovery.ServiceDiscovery
+zk=com.example.demo.registryCenter.zookeeper.ServiceDiscovery.ServiceDiscoveryImpl

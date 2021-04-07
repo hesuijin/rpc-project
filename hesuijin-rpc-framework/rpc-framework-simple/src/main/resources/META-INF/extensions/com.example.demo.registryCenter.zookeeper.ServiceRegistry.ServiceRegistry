@@ -1,1 +1,1 @@
-zk=com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry
+zk=com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistryImpl

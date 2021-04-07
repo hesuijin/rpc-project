@@ -149,6 +149,7 @@ public class ExtensionLoader<T> {
      * @param extensionClasses
      */
     private void loadDirectory(Map<String, Class<?>> extensionClasses) {
+        //加载该类所在包名 + 接口名称
         String fileName = ExtensionLoader.SERVICE_DIRECTORY + type.getName();
         try {
             Enumeration<URL> urls;

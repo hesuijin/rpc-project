@@ -17,16 +17,16 @@ public class SingletonFactory {
     }
 
     public static <T> T getInstance(Class<T> c) {
-        String key = c.toString();
         if (c == null) {
             throw new IllegalArgumentException();
         }
-
+        String key = c.toString();
         if (OBJECT_MAP.containsKey(key)) {
             return c.cast(OBJECT_MAP.get(key));
         } else {
             return c.cast(OBJECT_MAP.computeIfAbsent(key, k -> {
                 try {
+                    //这里会跳转到这个入参类的构造方法
                     return c.getDeclaredConstructor().newInstance();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     throw new RuntimeException(e.getMessage(), e);
