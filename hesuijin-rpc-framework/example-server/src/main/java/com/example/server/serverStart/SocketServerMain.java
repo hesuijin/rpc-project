@@ -27,7 +27,7 @@ public class SocketServerMain {
     }
 
     private static  void  registerService(SocketRpcServer socketRpcServer  ){
-        //创建一个需要注册的接口实现类对象 （后续通过该类对象拿 该对象的接口）
+        //创建一个需要注册的接口实现类对象 （后续通过该类的对象拿 该对象的接口信息）
         HelloService helloService = new HelloServiceImpl1();
         //设置需要注册的接口的  group 和 version
         RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()

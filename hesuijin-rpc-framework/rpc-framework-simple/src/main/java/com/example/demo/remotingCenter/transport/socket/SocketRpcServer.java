@@ -48,7 +48,6 @@ public class SocketRpcServer {
             Socket socket;
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
-                //TODO 待补充
                 threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
             threadPool.shutdown();

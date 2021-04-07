@@ -17,6 +17,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @Description:
  * 该类的作用是模拟 读取  yml 或者 properties 的配置文章  作用是获取相关的类
  * 了解即可
+ *
+ * getExtensionLoader 为获取进行本类 （扩展实例类）  先进行  入参（接口）接口 的校验
+ * getExtension 为入口方法   从配置文件里面获取额外信息   用于扩展类
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
@@ -38,24 +41,34 @@ public class ExtensionLoader<T> {
     }
 
     public static <S> ExtensionLoader<S> getExtensionLoader(Class<S> type) {
+        //入参类型 不能为空
         if (type == null) {
             throw new IllegalArgumentException("Extension type should not be null.");
         }
+        //入参类型 必须为接口
         if (!type.isInterface()) {
             throw new IllegalArgumentException("Extension type must be an interface.");
         }
+        //该接口都需要加 @SPI注解
         if (type.getAnnotation(SPI.class) == null) {
             throw new IllegalArgumentException("Extension type must be annotated by @SPI");
         }
-        // 先从缓存获取  如果不存在 则生成一个
+        //TODO  先从缓存获取  如果不存在  则在ConcurrentHashMap   接口名称为key   值为null的   hash
         ExtensionLoader<S> extensionLoader = (ExtensionLoader<S>) EXTENSION_LOADERS.get(type);
         if (extensionLoader == null) {
+
             EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader<S>(type));
             extensionLoader = (ExtensionLoader<S>) EXTENSION_LOADERS.get(type);
         }
         return extensionLoader;
     }
 
+
+    /**
+     * 根据名称获取 资源
+     * @param name
+     * @return
+     */
     public T getExtension(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Extension name should not be null or empty.");

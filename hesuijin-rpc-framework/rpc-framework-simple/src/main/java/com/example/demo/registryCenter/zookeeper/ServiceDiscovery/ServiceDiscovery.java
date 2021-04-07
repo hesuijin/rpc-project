@@ -1,5 +1,7 @@
 package com.example.demo.registryCenter.zookeeper.ServiceDiscovery;
 
+import com.example.common.extension.SPI;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -7,6 +9,7 @@ import java.net.InetSocketAddress;
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
+@SPI
 public interface ServiceDiscovery {
 
     /**

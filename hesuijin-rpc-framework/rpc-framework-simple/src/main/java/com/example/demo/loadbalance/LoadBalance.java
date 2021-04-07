@@ -1,5 +1,7 @@
 package com.example.demo.loadbalance;
 
+import com.example.common.extension.SPI;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,7 @@ import java.util.List;
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
+@SPI
 public interface LoadBalance {
 
     String selectServiceAddress(List<String> serviceAddresses, String rpcServiceName);

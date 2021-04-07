@@ -2,6 +2,7 @@ package com.example.server.serviceImpl;
 
 import com.example.api.Hello;
 import com.example.api.HelloService;
+import com.example.demo.annotation.RpcService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2021/4/5
  */
 @Slf4j
+@RpcService(group = "test1", version = "version1")
 public class HelloServiceImpl1 implements HelloService {
 
     static {
