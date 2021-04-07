@@ -31,7 +31,7 @@ public class ServiceProviderImpl implements ServiceProvider{
     public ServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
-
+        //进行 serviceRegistry 的初始化
         serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
     }
 

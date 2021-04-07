@@ -72,18 +72,24 @@ public class ExtensionLoader<T> {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Extension name should not be null or empty.");
         }
-        // firstly get from cache, if not hit, create one
-        //获取name名称 为 loadBalance 获取其他名称 的锁
+
+        //获取名称 入参为 name 的对象
         Holder<Object> holder = cachedInstances.get(name);
         if (holder == null) {
+            //如果这个对象不存在 则创建
+            //同时存放到cachedInstances中   key值为 入参 name  value 为 new出来的 Holder对象
             cachedInstances.putIfAbsent(name, new Holder<>());
             holder = cachedInstances.get(name);
         }
-        // 如果这个单例不存在  则创建
+        // 使用 holder的get方法 获取对象  注意该方法里面有 volatile关键字 可以防止重排
         Object instance = holder.get();
+        // 双重判空 校验锁
+        // 第一次判空 避免每次都进入 synchronized 重量级锁
         if (instance == null) {
+            //使用Holder对象 进行加锁
             synchronized (holder) {
                 instance = holder.get();
+                //第二次判空 获取 使用入参 name  通过createExtension  获取的 类
                 if (instance == null) {
                     instance = createExtension(name);
                     holder.set(instance);
@@ -99,7 +105,7 @@ public class ExtensionLoader<T> {
      * @return
      */
     private T createExtension(String name) {
-        //getExtensionClasses() 读取该类型的所有扩展信息
+        //getExtensionClasses() 读取name的所有扩展信息
         //get(name) 根据名称获取 指定那个
         Class<?> clazz = getExtensionClasses().get(name);
 
