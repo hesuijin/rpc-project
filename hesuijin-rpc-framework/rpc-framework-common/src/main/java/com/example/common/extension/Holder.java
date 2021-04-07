@@ -2,6 +2,7 @@ package com.example.common.extension;
 
 /**
  * @Description:
+ *  使用volatile 锁本类
  * @Author HeSuiJin
  * @Date 2021/4/2
  */

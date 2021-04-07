@@ -53,10 +53,9 @@ public class ExtensionLoader<T> {
         if (type.getAnnotation(SPI.class) == null) {
             throw new IllegalArgumentException("Extension type must be annotated by @SPI");
         }
-        //TODO  先从缓存获取  如果不存在  则在ConcurrentHashMap   接口名称为key   值为null的   hash
+        //先从ConcurrentHashMap获取   如果不存在  则在ConcurrentHashMap   接口名称为key   值为null的   hash
         ExtensionLoader<S> extensionLoader = (ExtensionLoader<S>) EXTENSION_LOADERS.get(type);
         if (extensionLoader == null) {
-
             EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader<S>(type));
             extensionLoader = (ExtensionLoader<S>) EXTENSION_LOADERS.get(type);
         }
@@ -74,12 +73,13 @@ public class ExtensionLoader<T> {
             throw new IllegalArgumentException("Extension name should not be null or empty.");
         }
         // firstly get from cache, if not hit, create one
+        //获取name名称 为 loadBalance 获取其他名称 的锁
         Holder<Object> holder = cachedInstances.get(name);
         if (holder == null) {
             cachedInstances.putIfAbsent(name, new Holder<>());
             holder = cachedInstances.get(name);
         }
-        // create a singleton if no instance exists
+        // 如果这个单例不存在  则创建
         Object instance = holder.get();
         if (instance == null) {
             synchronized (holder) {
@@ -93,9 +93,16 @@ public class ExtensionLoader<T> {
         return (T) instance;
     }
 
+    /**
+     * 开始创建
+     * @param name
+     * @return
+     */
     private T createExtension(String name) {
-        // load all extension classes of type T from file and get specific one by name
+        //getExtensionClasses() 读取该类型的所有扩展信息
+        //get(name) 根据名称获取 指定那个
         Class<?> clazz = getExtensionClasses().get(name);
+
         if (clazz == null) {
             throw new RuntimeException("No such extension of name " + name);
         }
@@ -111,17 +118,25 @@ public class ExtensionLoader<T> {
         return instance;
     }
 
+    /**
+     * //TODO 如果配置文件被修改 如何处理
+     * @return
+     */
     private Map<String, Class<?>> getExtensionClasses() {
         // get the loaded extension class from the cache
         Map<String, Class<?>> classes = cachedClasses.get();
-        // double check
+        // 双重判空 校验锁
+        // 第一次判空 避免每次都进入 synchronized 重量级锁
         if (classes == null) {
+//            使用 synchronized 添加类锁
             synchronized (cachedClasses) {
                 classes = cachedClasses.get();
+                //第二次判空 获取 cachedClasses 配置信息
                 if (classes == null) {
                     classes = new HashMap<>();
-                    // load all extensions from our extensions directory
+                    // 读取文件
                     loadDirectory(classes);
+                    //以后必定不为空
                     cachedClasses.set(classes);
                 }
             }
@@ -129,6 +144,10 @@ public class ExtensionLoader<T> {
         return classes;
     }
 
+    /**
+     * 读取文件
+     * @param extensionClasses
+     */
     private void loadDirectory(Map<String, Class<?>> extensionClasses) {
         String fileName = ExtensionLoader.SERVICE_DIRECTORY + type.getName();
         try {
@@ -146,6 +165,12 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 读取配置信息
+     * @param extensionClasses
+     * @param classLoader
+     * @param resourceUrl
+     */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceUrl) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceUrl.openStream(), UTF_8))) {
             String line;

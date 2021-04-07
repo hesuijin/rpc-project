@@ -22,6 +22,9 @@ public class ServiceDiscoveryImpl implements ServiceDiscovery{
     private final LoadBalance loadBalance;
 
     public ServiceDiscoveryImpl() {
+//         ExtensionLoader<LoadBalance> extensionLoader = ExtensionLoader.getExtensionLoader(LoadBalance.class);
+//        this.loadBalance = extensionLoader.getExtension("loadBalance");
+
         this.loadBalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension("loadBalance");
     }
 
