@@ -25,7 +25,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @Date 2021/4/2
  */
 @Slf4j
-//TODO 读取配置文件理解
 public class ExtensionLoader<T> {
 
     private static final String SERVICE_DIRECTORY = "META-INF/extensions/";
@@ -54,7 +53,8 @@ public class ExtensionLoader<T> {
         if (type.getAnnotation(SPI.class) == null) {
             throw new IllegalArgumentException("Extension type must be annotated by @SPI");
         }
-        //先从ConcurrentHashMap获取   如果不存在  则在ConcurrentHashMap   接口名称为key   值为null的   hash
+        //先从ConcurrentHashMap获取   如果不存在
+        // 则在ConcurrentHashMap  新增  接口类名称为key   ExtensionLoader<S>(接口类) 为
         ExtensionLoader<S> extensionLoader = (ExtensionLoader<S>) EXTENSION_LOADERS.get(type);
         if (extensionLoader == null) {
             EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader<S>(type));
