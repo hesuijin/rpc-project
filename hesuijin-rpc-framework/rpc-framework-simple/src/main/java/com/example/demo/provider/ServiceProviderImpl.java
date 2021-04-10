@@ -35,13 +35,23 @@ public class ServiceProviderImpl implements ServiceProvider{
     public ServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
+
         //进行 serviceRegistry 的初始化
 
-        //1:输入ServiceRegistry类
-        //2:返回该ServiceRegistry类的ExtensionLoader
-        //3：使用ServiceRegistry类的ExtensionLoader的getExtension 去初始serviceRegistry
-        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
+        //1:输入  泛型为ServiceRegistry类 （进行初步校验）
+        //2:返回  泛型为ServiceRegistry类  的 ExtensionLoader对象
 
+        //3:使用  泛型为ServiceRegistry类  的 ExtensionLoader对象 的 getExtension 方法  入参为"zk"
+        //
+        //          作用1：
+        //              通过读取自定义的静态配置文件 把ServiceRegistry接口类的ServiceRegistryImpl实现类
+        //              存放到名称为  EXTENSION_INSTANCES 这个 ConcurrentHashMap 中  key
+        //          作用2：
+        //              返回ServiceRegistry接口类的ServiceRegistryImpl实现类
+
+
+        ExtensionLoader<ServiceRegistry> extensionLoader = ExtensionLoader.getExtensionLoader(ServiceRegistry.class);
+        this.serviceRegistry = extensionLoader.getExtension("zk");
     }
 
 

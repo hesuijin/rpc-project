@@ -101,19 +101,23 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 开始创建
-     *
+     * 获取该接口类的实现类  ？？？
+     * 把资源的等号  前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
      * @param name
      * @return
      */
     private T createExtension(String name) {
-        //getExtensionClasses() 读取name的所有扩展信息
+        //getExtensionClasses() 读取name (zk)的所有 实现类
+        Map<String, Class<?>> extensionClasses = getExtensionClasses();
+
         //get(name) 根据名称获取 指定那个
-        Class<?> clazz = getExtensionClasses().get(name);
+        Class<?> clazz = extensionClasses.get(name);
 
         if (clazz == null) {
             throw new RuntimeException("No such extension of name " + name);
         }
+
+        //获取该接口类的实现类  ？？？
         T instance = (T) EXTENSION_INSTANCES.get(clazz);
         if (instance == null) {
             try {
@@ -145,7 +149,7 @@ public class ExtensionLoader<T> {
                     classes = new HashMap<>();
                     // 读取文件
                     loadDirectory(classes);
-                    //以后必定不为空
+                    //cachedClasses 存放最近更新的   Map<String, Class<?>> extensionClasses
                     cachedClasses.set(classes);
                 }
             }
@@ -154,7 +158,7 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 读取文件
+     * 匹配到静态资源目录下的文件路径
      *
      * @param extensionClasses
      */
@@ -162,26 +166,24 @@ public class ExtensionLoader<T> {
         //加载 该接口类 所在包名 + 接口类名称
         //com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry
         String fileName = ExtensionLoader.SERVICE_DIRECTORY + type.getName();
-
         //类加载器
         ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
-        //获取  该接口类 所在包名 + 接口类名称 的路径
         //注意  由于该路径是唯一的 所以之前获取resourceUrl就行了
         URL resourceUrl = classLoader.getResource(fileName);
         if (resourceUrl != null) {
+            //读取配置文件里面资源
             loadResource(extensionClasses, classLoader, resourceUrl);
         }
-
     }
 
-//    public static void main(String[] args) throws IOException {
-//        ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
-//        Enumeration<URL>   urls = classLoader.getResources("META-INF/extensions/com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry");
-//        System.out.println(JSONObject.toJSONString(urls));
-//    }
+
 
     /**
-     * 读取配置信息
+     * 读取配置文件的资源
+     * 注意资源为该接口类  的实现类的路径
+     *
+     * 把资源的等号  前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
+     *最终目的 extensionClasses.put(name, clazz);
      *
      * @param extensionClasses
      * @param classLoader
@@ -190,12 +192,13 @@ public class ExtensionLoader<T> {
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceUrl) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceUrl.openStream(), UTF_8))) {
             String line;
-            // read every line
+            // 读取每一行
+            //
             while ((line = reader.readLine()) != null) {
-                // get index of comment
+                // 获取是否存在 #
                 final int ci = line.indexOf('#');
                 if (ci >= 0) {
-                    // string after # is comment so we ignore it
+                    // 如果配置文件里面带 # 号则只获取本行 # 后的资源
                     line = line.substring(0, ci);
                 }
                 line = line.trim();
@@ -207,6 +210,7 @@ public class ExtensionLoader<T> {
                         // our SPI use key-value pair so both of them must not be empty
                         if (name.length() > 0 && clazzName.length() > 0) {
                             Class<?> clazz = classLoader.loadClass(clazzName);
+                            //把资源的等号  前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
                             extensionClasses.put(name, clazz);
                         }
                     } catch (ClassNotFoundException e) {
