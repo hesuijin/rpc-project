@@ -1,7 +1,9 @@
 package com.example.common.extension;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.imageio.spi.ServiceRegistry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,10 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * @Description:
- * 该类的作用是模拟 读取  yml 或者 properties 的配置文章  作用是获取相关的类
+ * @Description: 该类的作用是模拟 读取  yml 或者 properties 的配置文章  作用是获取相关的类
  * 了解即可
- *
+ * <p>
  * getExtensionLoader 为获取进行本类 （扩展实例类）  先进行  入参（接口）接口 的校验
  * getExtension 为入口方法   从配置文件里面获取额外信息   用于扩展类
  * @Author HeSuiJin
@@ -62,9 +63,9 @@ public class ExtensionLoader<T> {
         return extensionLoader;
     }
 
-
     /**
      * 根据名称获取 资源
+     *
      * @param name
      * @return
      */
@@ -101,6 +102,7 @@ public class ExtensionLoader<T> {
 
     /**
      * 开始创建
+     *
      * @param name
      * @return
      */
@@ -126,6 +128,7 @@ public class ExtensionLoader<T> {
 
     /**
      * //TODO 如果配置文件被修改 如何处理
+     *
      * @return
      */
     private Map<String, Class<?>> getExtensionClasses() {
@@ -152,28 +155,34 @@ public class ExtensionLoader<T> {
 
     /**
      * 读取文件
+     *
      * @param extensionClasses
      */
     private void loadDirectory(Map<String, Class<?>> extensionClasses) {
-        //加载该类所在包名 + 接口名称
+        //加载 该接口类 所在包名 + 接口类名称
+        //com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry
         String fileName = ExtensionLoader.SERVICE_DIRECTORY + type.getName();
-        try {
-            Enumeration<URL> urls;
-            ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
-            urls = classLoader.getResources(fileName);
-            if (urls != null) {
-                while (urls.hasMoreElements()) {
-                    URL resourceUrl = urls.nextElement();
-                    loadResource(extensionClasses, classLoader, resourceUrl);
-                }
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
+
+        //类加载器
+        ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
+        //获取  该接口类 所在包名 + 接口类名称 的路径
+        //注意  由于该路径是唯一的 所以之前获取resourceUrl就行了
+        URL resourceUrl = classLoader.getResource(fileName);
+        if (resourceUrl != null) {
+            loadResource(extensionClasses, classLoader, resourceUrl);
         }
+
     }
+
+//    public static void main(String[] args) throws IOException {
+//        ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
+//        Enumeration<URL>   urls = classLoader.getResources("META-INF/extensions/com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry");
+//        System.out.println(JSONObject.toJSONString(urls));
+//    }
 
     /**
      * 读取配置信息
+     *
      * @param extensionClasses
      * @param classLoader
      * @param resourceUrl

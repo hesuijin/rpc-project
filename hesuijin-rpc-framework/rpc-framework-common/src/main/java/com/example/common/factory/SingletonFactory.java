@@ -26,7 +26,7 @@ public class SingletonFactory {
         } else {
             return c.cast(OBJECT_MAP.computeIfAbsent(key, k -> {
                 try {
-                    //这里会跳转到这个入参类的构造方法
+                    //这里会跳转到这个 入参类  的构造方法
                     return c.getDeclaredConstructor().newInstance();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     throw new RuntimeException(e.getMessage(), e);

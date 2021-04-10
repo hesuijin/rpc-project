@@ -3,12 +3,14 @@ package com.example.demo.provider;
 import com.example.common.entity.RpcServiceProperties;
 import com.example.common.extension.ExtensionLoader;
 import com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistry;
+import com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistryImpl;
 import com.example.demo.remotingCenter.transport.socket.SocketRpcServer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,19 +24,25 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceProviderImpl implements ServiceProvider{
 
     // com.example.api.HelloService  serviceImplObject   存放在 hash集合 serviceMap 中
+    //线程安全
     private final Map<String, Object> serviceMap;
     // com.example.api.HelloService     存放在 set集合 registeredService 中
+    //线程安全
     private final Set<String> registeredService;
-    private final ServiceRegistry serviceRegistry;
 
+    private final ServiceRegistry serviceRegistry;
 
     public ServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
         //进行 serviceRegistry 的初始化
-        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
-    }
 
+        //1:输入ServiceRegistry类
+        //2:返回该ServiceRegistry类的ExtensionLoader
+        //3：使用ServiceRegistry类的ExtensionLoader的getExtension 去初始serviceRegistry
+        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
+
+    }
 
 
     @Override

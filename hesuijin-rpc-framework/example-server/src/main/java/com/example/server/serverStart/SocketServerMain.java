@@ -15,7 +15,6 @@ import com.example.server.serviceImpl.HelloServiceImpl1;
  */
 public class SocketServerMain {
     public static void main(String[] args) {
-
 //        socketRpcServer 不再是单纯的socket服务端 而是 Rpc框架 socket的服务端
 
         //1：创建一个 SocketRpcServer 的服务端
