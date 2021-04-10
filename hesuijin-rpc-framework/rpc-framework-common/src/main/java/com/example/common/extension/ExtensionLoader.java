@@ -32,7 +32,9 @@ public class ExtensionLoader<T> {
     private static final Map<Class<?>, Object> EXTENSION_INSTANCES = new ConcurrentHashMap<>();
 
     private final Class<?> type;
+    //对象缓存
     private final Map<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>();
+    //类缓存
     private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
 
 
@@ -64,8 +66,10 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 根据名称获取 资源
+     *  给cachedInstances  对象实例缓存
+     *  新增   key为 zk  value 为 ServiceRegistryImpl 对象  的 hash
      *
+     *  返回 ServiceRegistry接口类   的  实现类ServiceRegistryImpl 对象
      * @param name
      * @return
      */
@@ -74,11 +78,11 @@ public class ExtensionLoader<T> {
             throw new IllegalArgumentException("Extension name should not be null or empty.");
         }
 
-        //获取名称 入参为 name 的对象
+        //在cachedInstances  获取  key为name 的value
         Holder<Object> holder = cachedInstances.get(name);
         if (holder == null) {
-            //如果这个对象不存在 则创建
-            //同时存放到cachedInstances中   key值为 入参 name  value 为 new出来的 Holder对象
+            //如果这个value不存在 则创建
+            //同时存放到cachedInstances中   key为name  value为new出来的Holder对象
             cachedInstances.putIfAbsent(name, new Holder<>());
             holder = cachedInstances.get(name);
         }
@@ -90,7 +94,8 @@ public class ExtensionLoader<T> {
             //使用Holder对象 进行加锁
             synchronized (holder) {
                 instance = holder.get();
-                //第二次判空 获取 使用入参 name  通过createExtension  获取的 类
+                //第二次判空 获取 使用入参 name  通过createExtension
+                //ServiceRegistry接口类   的  实现类ServiceRegistryImpl 对象
                 if (instance == null) {
                     instance = createExtension(name);
                     holder.set(instance);
@@ -101,8 +106,11 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 获取该接口类的实现类  ？？？
-     * 把资源的等号  前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
+     * zk=com.example.demo.registryCenter.zookeeper.ServiceRegistry.ServiceRegistryImpl
+     * 把资源的     等号前面的zk作为key  等号后面的接口实现类作为value  放到    名称为extensionClasses的Map集合中里面
+     *
+     * 返回ServiceRegistry接口类的对象
+     *
      * @param name
      * @return
      */
@@ -117,7 +125,7 @@ public class ExtensionLoader<T> {
             throw new RuntimeException("No such extension of name " + name);
         }
 
-        //获取该接口类的实现类  ？？？
+        //获取该接口类的实现类
         T instance = (T) EXTENSION_INSTANCES.get(clazz);
         if (instance == null) {
             try {
@@ -159,7 +167,7 @@ public class ExtensionLoader<T> {
 
     /**
      * 匹配到静态资源目录下的文件路径
-     *
+     *入参extensionClasses 只是为了直接在该方法里面修改
      * @param extensionClasses
      */
     private void loadDirectory(Map<String, Class<?>> extensionClasses) {
@@ -180,9 +188,9 @@ public class ExtensionLoader<T> {
 
     /**
      * 读取配置文件的资源
-     * 注意资源为该接口类  的实现类的路径
+     * 资源为该接口类  的实现类的路径
      *
-     * 把资源的等号  前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
+     * 把资源的等号前面的zk作为key  等号  后面的接口实现类作为value 放到 extensionClasses map里面
      *最终目的 extensionClasses.put(name, clazz);
      *
      * @param extensionClasses

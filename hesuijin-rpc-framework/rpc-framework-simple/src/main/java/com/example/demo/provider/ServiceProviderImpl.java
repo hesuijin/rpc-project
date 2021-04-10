@@ -54,8 +54,10 @@ public class ServiceProviderImpl implements ServiceProvider {
          *              给  EXTENSION_INSTANCES 这个 ConcurrentHashMap 新增hash
          *                  zk 作为key
          *                  ServiceRegistryImpl 作为value
-         *        作用2：
-         *           返回ServiceRegistry接口类的ServiceRegistryImpl实现类
+         *        作用2：给cachedInstances  对象缓存
+         *               新增   key为 zk  value 为 ServiceRegistryImpl 对象  的 hash
+         *        作用3：
+         *           返回 ServiceRegistry接口类   的  实现类ServiceRegistryImpl 对象
          *
          */
 
