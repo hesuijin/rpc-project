@@ -16,7 +16,6 @@ public class JdkProxyFactory {
                 target.getClass().getClassLoader(),
                 // 代理需要实现的接口，可指定多个
                 target.getClass().getInterfaces(),
-
                 // 代理对象对应的自定义 InvocationHandler
                 new MyInvocationHandler(target)
         );

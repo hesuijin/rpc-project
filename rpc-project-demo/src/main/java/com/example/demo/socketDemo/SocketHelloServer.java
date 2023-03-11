@@ -17,7 +17,7 @@ import java.net.Socket;
 public class SocketHelloServer {
 
     public void start(int port) {
-        //1.创建 ServerSocket 对象并且绑定一个端口
+        //1.创建 ServerSocket 对象并且绑定一个端口  当结束后 会关闭ServerSocket
         try (ServerSocket server = new ServerSocket(port);) {
             Socket socket;
             //2.通过 accept()方法监听客户端请求
@@ -43,9 +43,10 @@ public class SocketHelloServer {
     }
 
     public static void main(String[] args) {
-
         SocketHelloServer socketHelloServer = new SocketHelloServer();
         socketHelloServer.start(6666);
+    }
+}
 
 //        new Thread(() -> {
 //            // 创建 socketDemo 连接
@@ -56,5 +57,3 @@ public class SocketHelloServer {
 //        threadPool.execute(() -> {
 //            // 创建 socketDemo 连接
 //        });
-    }
-}
