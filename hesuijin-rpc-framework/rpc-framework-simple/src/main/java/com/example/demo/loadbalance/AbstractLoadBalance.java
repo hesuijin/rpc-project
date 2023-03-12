@@ -5,7 +5,7 @@ import com.example.demo.loadbalance.LoadBalance;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 负载均衡中  根据指定策略  在服务地址集合中选择其中一个服务地址 （selectServiceAddress）
  * @Author HeSuiJin
  * @Date 2021/4/2
  */

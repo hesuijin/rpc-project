@@ -13,6 +13,12 @@ import java.util.Random;
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
 
+    /**
+     * 重写了 AbstractLoadBalance的doSelect方法
+     * @param serviceAddresses
+     * @param rpcServiceName
+     * @return
+     */
     @Override
     protected String doSelect(List<String> serviceAddresses, String rpcServiceName) {
         Random random = new Random();
