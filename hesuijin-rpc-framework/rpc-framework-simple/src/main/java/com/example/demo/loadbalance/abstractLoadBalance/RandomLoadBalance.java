@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 负载均衡  随机策略
+ * 负载均衡策略  随机策略
  * @Description:
  * @Author HeSuiJin
  * @Date 2021/4/2

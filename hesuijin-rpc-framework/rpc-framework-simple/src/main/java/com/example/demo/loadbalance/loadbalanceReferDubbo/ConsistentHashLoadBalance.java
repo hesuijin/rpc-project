@@ -1,5 +1,7 @@
 package com.example.demo.loadbalance.loadbalanceReferDubbo;
 
+import com.example.demo.loadbalance.AbstractLoadBalance;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,15 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Description:
- * 该负载均衡策略 Hash一致性
+ * 负载均衡策略 Hash一致性算法策略
  * 实现参考 dubbo : https://github.com/apache/dubbo/blob/2d9583adf26a2d8bd6fb646243a9fe80a77e65d5/dubbo-cluster/src/main/java/org/apache/dubbo/rpc/cluster/loadbalance/ConsistentHashLoadBalance.java
  * 在loadbalanceReferDubbo 下md文件
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
 
- // TODO  参考阿里的 Dubbo Hash一致性 负载均衡策略 理解  (在此处理解即可)
-public class ConsistentHashLoadBalance  {
+ //  参考阿里的 Dubbo Hash一致性 负载均衡策略 理解  (在此处理解即可)
+//    也可以查看Java知识点系列文章中关于Hash的文章进行理解
+public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
     private final ConcurrentHashMap<String, ConsistentHashSelector> selectors = new ConcurrentHashMap<>();
 
