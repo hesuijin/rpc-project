@@ -10,6 +10,6 @@ import com.example.common.extension.SPI;
 @SPI
 public interface HelloExtensionLoaderService {
 
-    public void HelloExtensionLoaderMethod();
+    void helloExtensionLoaderMethod();
 
 }

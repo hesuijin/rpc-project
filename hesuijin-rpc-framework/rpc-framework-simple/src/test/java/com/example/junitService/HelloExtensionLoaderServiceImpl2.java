@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class HelloExtensionLoaderServiceImpl2 implements HelloExtensionLoaderService{
 
-    @Override
-    public void HelloExtensionLoaderMethod(){
-        log.info("你好啊！ HelloExtensionLoaderMethod1 ");
+    public void helloExtensionLoaderMethod(){
+        log.info("你好啊！ HelloExtensionLoaderMethod2 ");
     }
 }
