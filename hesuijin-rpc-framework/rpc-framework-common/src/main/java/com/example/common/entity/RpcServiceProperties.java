@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @Description:
+ *  接口三要素：接口信息(接口位置+接口名) - 接口所在组 -接口版本号
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
@@ -17,7 +18,11 @@ import lombok.NoArgsConstructor;
 public class RpcServiceProperties {
 
     /**
-     * 服务名称
+     * 服务名称  serviceName是通过以下方法获取的
+     *  Class<?> serviceRelatedInterface = serviceImplObject.getClass().getInterfaces()[0];
+     * 获取该接口的   接口所在包 + 名称 ：com.example.api.HelloService
+     * String serviceName = serviceRelatedInterface.getCanonicalName();
+     *
      */
     private String serviceName;
     /**
@@ -29,8 +34,7 @@ public class RpcServiceProperties {
      */
     private String version;
 
-
     public String toRpcServiceName() {
-        return this.getServiceName() + this.getGroup() + this.getVersion();
+        return this.getServiceName() + "-" +this.getGroup() + "-" + this.getVersion();
     }
 }

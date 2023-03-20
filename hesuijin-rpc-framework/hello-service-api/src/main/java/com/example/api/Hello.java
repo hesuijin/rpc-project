@@ -1,20 +1,21 @@
 package com.example.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.io.Serializable;
 
 /**
- * @Description:
+ * @Description: 该类为传输类 需要进行序列化
  * @Author HeSuiJin
  * @Date 2021/4/5
  */
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hello {
+@Getter
+@Setter
+@Builder
+@ToString
+public class Hello implements Serializable {
     private String message;
     private String description;
 }
