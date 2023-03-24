@@ -27,7 +27,7 @@ public class ThreadPoolFactoryUtils {
     }
 
     /**
-     * 获取默认线程池  使用默认配置
+     * 使用配置类的配置  获取线程池
      * @param threadNamePrefix
      * @return
      */
@@ -39,8 +39,8 @@ public class ThreadPoolFactoryUtils {
 
     /**
      * 如果线程池不存在则自建一个
-     * @param customThreadPoolConfig
-     * @param threadNamePrefix
+     * @param customThreadPoolConfig 配置类
+     * @param threadNamePrefix  线程池池名称
      * @param daemon
      * @return
      */
@@ -60,29 +60,34 @@ public class ThreadPoolFactoryUtils {
         //设置生成工厂
         ThreadFactory threadFactory = createThreadFactory(threadNamePrefix, daemon);
 
-        //输入6个核心参数 第7个核心参数 拒绝参数使用默认策略  线程池中 线程最大线程数 + 队列容量 < 任务量 则抛出异常
+        //输入6个核心参数 第7个核心参数 拒绝参数使用默认策略（直接抛出异常）
+        //线程池中 线程最大线程数 + 队列容量 < 任务量 则抛出异常
         return new ThreadPoolExecutor(customThreadPoolConfig.getCorePoolSize(), customThreadPoolConfig.getMaximumPoolSize(),
                 customThreadPoolConfig.getKeepAliveTime(), customThreadPoolConfig.getUnit(), customThreadPoolConfig.getWorkQueue(),
                 threadFactory);
     }
 
-
-
-
     /**
-     * 创建 ThreadFactory 。如果threadNamePrefix不为空 则使用自建ThreadFactory 自定义名称
+     * 创建ThreadFactory 。
+     * 如果threadNamePrefix不为空 则使用自建ThreadFactory 自定义名称
      * 否则使用defaultThreadFactory
+     *
+     * daemon 如果是非守护线程  JVM的退出会受其影响 只有全部的非守护线程退出 JVM才能退出
+     * 对应是守护线程如GC垃圾回收线程，本身与业务无关，JVM的退出不需要考虑GC线程是否结束
+     *
      * @param threadNamePrefix 作为创建的线程名字的前缀
      * @param daemon           指定是否为 Daemon Thread(守护线程)
      * @return ThreadFactory
      */
     public static ThreadFactory createThreadFactory(String threadNamePrefix, Boolean daemon) {
         if (threadNamePrefix != null) {
+            //daemon 不为空则 按照daemon设置线程池的线程是否为守护线程
             if (daemon != null) {
                 return new ThreadFactoryBuilder()
                         .setNameFormat(threadNamePrefix + "-%d")
                         .setDaemon(daemon).build();
             } else {
+            //daemon 为空 则取默认的也是为空 （因为setDaemon(null)时会直接报错）
                 return new ThreadFactoryBuilder().setNameFormat(threadNamePrefix + "-%d").build();
             }
         }
@@ -106,7 +111,7 @@ public class ThreadPoolFactoryUtils {
         THREAD_POOLS.entrySet().parallelStream().forEach(entry -> {
             ExecutorService executorService = entry.getValue();
             executorService.shutdown();
-            log.info("平滑 关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
+            log.info("平滑关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
             boolean isFinishShutdown = false;
             try {
                 isFinishShutdown= executorService.awaitTermination(20, TimeUnit.SECONDS);
@@ -117,10 +122,13 @@ public class ThreadPoolFactoryUtils {
             //shutdown关闭失败  或者  awaitTermination 异常都执行立即关闭命令
             if (!isFinishShutdown ){
                 executorService.shutdownNow();
-                log.info("立即  关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
+                log.info("立即关闭该线程池 [{}] [{}]", entry.getKey(), executorService.isTerminated());
             }
         });
     }
+
+}
+
 //
 //
 //    /**
@@ -140,4 +148,3 @@ public class ThreadPoolFactoryUtils {
 //        }, 0, 1, TimeUnit.SECONDS);
 //    }
 
-}

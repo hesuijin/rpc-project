@@ -18,9 +18,13 @@ public class CustomThreadPoolConfig {
     /**
      * 线程池默认参数
      */
+    //核心线程数
     private static final int DEFAULT_CORE_POOL_SIZE = 10;
+    //最大线程池数
     private static final int DEFAULT_MAXIMUM_POOL_SIZE_SIZE = 100;
+    //非核心线程保活时间
     private static final int DEFAULT_KEEP_ALIVE_TIME = 1;
+    //非核心线程保活时间  单位
     private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MINUTES;
 
 
