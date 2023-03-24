@@ -21,13 +21,16 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+// *  服务端（注册者）：使用  接口信息三要素 + 服务端IP端口形成  接口信息三要素/服务端IP端口  形成持久化节点到Zk中
+//  *  客户端（发现者）：使用  接口信息三要素 获取全部的节点  然后使用负载均衡的方式获取其中一个节点的服务端IP端口  进行调用
+
 /**
  * @Description: 注意 请先查看 Zookeeper的相关知识点  结构为树  以node节点组成
  * CuratorUtils 工具类 可以查看zookeeperDemo里面的相关方法
  *
  *  1：生成zkClient
 *   2：获取rpcServiceClassName 下的所有子节点，如果是rpcServiceClassName是首次获取，则需要注册到Zk中，从而被动态监听。
-*      rpcServiceClassName ：包含className（interfaceName）服务接口名称如 com.example.demo.HelloService（group + version）
+*      rpcServiceClassName ：包含className（interfaceName）服务接口类名称如 com.example.demo.HelloService（group + version）
 *      子节点 ：  服务端注册到Zookeeper的IP+端口号  127.0.0.1:8080   127.0.0.2:8080  127.0.0.3:8080
  * 最终数据结构（rpcServiceClassName）:
  *      1:com.example.demo.HelloService-group-version/127.0.0.1:8080
@@ -126,8 +129,9 @@ public class CuratorUtils {
      * 1:先判断rpcServiceClassName节点是否存在内存缓存SERVICE_ADDRESS_MAP中，如果存在则获取其子节点直接返回。
      * 2：如果内存缓存中不存在 则
      *      1：使用getChildrenNodes去Zk中获取 rpcServiceClassName的子节点
-     *      2：同时由于再SERVICE_ADDRESS_MAP中不存在，那意味着该rpcServiceClassName绝大概率是新的rpcServiceClassName
-     *         新的rpcServiceClassName 需要注册到Zk中，后续Zk监听器可以监听该rpcServiceClassName下的节点变化
+     *      2：同时由于在SERVICE_ADDRESS_MAP中不存在，
+     *         那意味着该rpcServiceClassName大概率是没有被注册过的rpcServiceClassName（也有可能其子节点都被清除了）
+     *         因为新的rpcServiceClassName 需要注册到Zk中，后续Zk监听器可以监听该rpcServiceClassName下的节点变化
      *         如果其子节点发生变化，则同步到SERVICE_ADDRESS_MAP中。
      * @param zkClient
      * @param rpcServiceClassName
@@ -158,7 +162,7 @@ public class CuratorUtils {
     }
 
     /**
-     *  获取rpcServiceClassName 下所有子节点的路径
+     *  获取rpcServiceClassName 下所有子节点
      *
      * @param zkClient
      * @param rpcServiceClassName
@@ -217,7 +221,7 @@ public class CuratorUtils {
 
 
     /**
-     * 删除zkClient 下面该服务 的所有数据
+     * 删除zkClient 下面该服务 的所有节点数据
      * 即尾部等于  已经停止服务端的 IP:端口号 时，剔除掉该服务端的数据。
      */
     public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {

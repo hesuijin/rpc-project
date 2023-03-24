@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 2021/4/5
  */
 @Slf4j
-//@RpcService(group = "socketSeverNameGroup", version = "socketSeverNameVersion")
 public class HelloServiceImpl implements HelloService {
 
     static {
@@ -20,8 +19,8 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public String helloServiceApi(Hello hello) {
-        log.info("HelloServiceImpl 收到: {}.", hello.getMessage());
-        String result = "Hello description is " + hello.getDescription();
+        log.info("HelloServiceImpl 收到 message: {} description:{}", hello.getMessage(),hello.getDescription());
+        String result = "Hello client! 我是HelloServiceImpl回应  很高兴收到你的调用!";
         log.info("HelloServiceImpl 返回: {}.", result);
         return result;
     }

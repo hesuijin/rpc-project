@@ -4,17 +4,11 @@ import com.example.common.entity.RpcServiceProperties;
 
 /**
  * @Description:
- *  存储 和 提供 服务对象
+ * 服务提供类 提供注册与发现功能
  * @Author HeSuiJin
  * @Date 2021/4/3
  */
 public interface ServiceProvider {
-
-    /**
-     * @param service              serviceImplObject
-     * @param rpcServiceName service related attributes
-     */
-    void addService(Object service,  String rpcServiceName);
 
     /**
      * @param rpcServiceProperties service related attributes
@@ -28,6 +22,11 @@ public interface ServiceProvider {
      */
     void publishService(Object service, RpcServiceProperties rpcServiceProperties);
 
-
-
 }
+
+
+//    /**
+//     * @param service              serviceImplObject
+//     * @param rpcServiceName service related attributes
+//     */
+//    void addService(Object service,  String rpcServiceName);

@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * @Description:
- *  接口三要素：接口信息(接口位置+接口名) - 接口所在组 -接口版本号
+ *  接口三要素：接口信息(接口位置+接口类名) - 接口所在组 -接口版本号
+ *  用于作为Zookeeper的node节点的前缀
  * @Author HeSuiJin
- * @Date 2021/4/2
+ * @Date 2023/3/21
  */
 @AllArgsConstructor
 @NoArgsConstructor

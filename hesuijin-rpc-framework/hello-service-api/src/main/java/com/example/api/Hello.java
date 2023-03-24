@@ -9,13 +9,15 @@ import java.io.Serializable;
  * @Author HeSuiJin
  * @Date 2021/4/5
  */
+@Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
 public class Hello implements Serializable {
+    /**
+     * 信息
+     */
     private String message;
+    /**
+     * 描述
+     */
     private String description;
 }

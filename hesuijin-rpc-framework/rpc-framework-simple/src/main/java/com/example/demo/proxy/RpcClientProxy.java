@@ -1,21 +1,31 @@
 package com.example.demo.proxy;
 
 import com.example.common.entity.RpcServiceProperties;
+import com.example.common.enums.RpcErrorMessageEnum;
+import com.example.common.enums.RpcResponseCodeEnum;
+import com.example.common.exception.RpcException;
+import com.example.demo.remotingCenter.dto.RpcRequest;
+import com.example.demo.remotingCenter.dto.RpcResponse;
 import com.example.demo.remotingCenter.transport.RpcRequestTransport;
+import com.example.demo.remotingCenter.transport.socket.SocketRpcClient;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * @Description:
+ * @Description: RpcClientProxy代理类 于重写的invoke的逻辑中执行特殊的逻辑
  * @Author HeSuiJin
  * @Date 2021/4/5
  */
 @Slf4j
 public class RpcClientProxy  implements InvocationHandler {
 
+
+    private static final String INTERFACE_NAME = "interfaceName";
 
     private final RpcRequestTransport rpcRequestTransport;
     private final RpcServiceProperties rpcServiceProperties;
@@ -30,6 +40,11 @@ public class RpcClientProxy  implements InvocationHandler {
             rpcServiceProperties.setVersion("");
         }
         this.rpcServiceProperties = rpcServiceProperties;
+    }
+
+    public RpcClientProxy(RpcRequestTransport rpcRequestTransport) {
+        this.rpcRequestTransport = rpcRequestTransport;
+        this.rpcServiceProperties = RpcServiceProperties.builder().group("").version("").build();
     }
 
     /**
@@ -47,7 +62,8 @@ public class RpcClientProxy  implements InvocationHandler {
     }
 
     /**
-     * 重新反射方法
+     * 通过代理的方式获取对象  在执行任何方法时都会执行  重写的invoke方法
+     * invoke方法中可以执行特殊逻辑
      * @param proxy
      * @param method
      * @param args
@@ -56,6 +72,39 @@ public class RpcClientProxy  implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return null;
+
+        log.info("invoked method: [{}]", method.getName());
+        RpcRequest rpcRequest = RpcRequest.builder().methodName(method.getName())
+                .paramTypes(method.getParameterTypes())
+                .parameters(args)
+                .requestId(UUID.randomUUID().toString())
+                .interfaceName(method.getDeclaringClass().getName())
+                .group(rpcServiceProperties.getGroup())
+                .version(rpcServiceProperties.getVersion())
+                .build();
+        RpcResponse<Object> rpcResponse = null;
+//        if (rpcRequestTransport instanceof NettyRpcClient) {
+//            CompletableFuture<RpcResponse<Object>> completableFuture = (CompletableFuture<RpcResponse<Object>>) rpcRequestTransport.sendRpcRequest(rpcRequest);
+//            rpcResponse = completableFuture.get();
+//        }
+        if (rpcRequestTransport instanceof SocketRpcClient) {
+            rpcResponse = (RpcResponse<Object>) rpcRequestTransport.sendRpcRequest(rpcRequest);
+        }
+        this.check(rpcResponse, rpcRequest);
+        return rpcResponse.getData();
+    }
+
+    private void check(RpcResponse<Object> rpcResponse, RpcRequest rpcRequest) {
+        if (rpcResponse == null) {
+            throw new RpcException(RpcErrorMessageEnum.SERVICE_INVOCATION_FAILURE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
+        }
+
+        if (!rpcRequest.getRequestId().equals(rpcResponse.getRequestId())) {
+            throw new RpcException(RpcErrorMessageEnum.REQUEST_NOT_MATCH_RESPONSE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
+        }
+
+        if (rpcResponse.getCode() == null || !rpcResponse.getCode().equals(RpcResponseCodeEnum.SUCCESS.getCode())) {
+            throw new RpcException(RpcErrorMessageEnum.SERVICE_INVOCATION_FAILURE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
+        }
     }
 }

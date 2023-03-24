@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
- * @Description:
+ * @Description: 读取配置
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
@@ -29,10 +29,9 @@ public class PropertiesFileUtil {
 
 
     public static Properties readPropertiesFile(String fileName) {
-//      报错
-//      URL url = ClassLoader.getSystemClassLoader().getResource("");
 
-//      获取当前的classpath的绝对路径的URI表示法。
+        //      URL url = ClassLoader.getSystemClassLoader().getResource("");
+        //      获取当前的classpath的绝对路径的URI表示法。
         URL url = Thread.currentThread().getContextClassLoader().getResource("");
 
         String rpcConfigPath = "";

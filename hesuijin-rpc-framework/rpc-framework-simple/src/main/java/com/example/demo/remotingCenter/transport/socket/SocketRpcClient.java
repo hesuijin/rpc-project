@@ -28,18 +28,15 @@ public class SocketRpcClient implements RpcRequestTransport {
     private final ServiceDiscovery serviceDiscovery;
 
     public SocketRpcClient() {
-        this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("zk");
+        ExtensionLoader<ServiceDiscovery> extensionLoader =  ExtensionLoader.getExtensionLoader(ServiceDiscovery.class);
+        this.serviceDiscovery = extensionLoader.getExtensionInstance("zk");
     }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
 
-        // rpcServiceClassName ：包含className（interfaceName）服务接口名称 com.example.demo.HelloService
-        String rpcServiceClassName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
-                .group(rpcRequest.getGroup()).version(rpcRequest.getVersion()).build().toRpcServiceName();
-        //使用Zookeeper发现
-        //获取请求的 服务端  （该服务端有对象的请求接口）
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceClassName);
+        //获取inetSocketAddress
+        InetSocketAddress inetSocketAddress = getInetSocketAddress(rpcRequest);
 
         try (Socket socket = new Socket()) {
             socket.connect(inetSocketAddress);
@@ -54,5 +51,21 @@ public class SocketRpcClient implements RpcRequestTransport {
         } catch (IOException | ClassNotFoundException e) {
             throw new RpcException("调用服务失败:", e);
         }
+    }
+
+    /**
+     * 根据rpcRequest获取 inetSocketAddress
+     * @param rpcRequest
+     * @return
+     */
+    public  InetSocketAddress getInetSocketAddress(RpcRequest rpcRequest){
+        // rpcServiceClassName ：包含className（interfaceName）服务接口类名称 com.example.demo.HelloService
+        String rpcServiceClassName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
+                .group(rpcRequest.getGroup()).version(rpcRequest.getVersion()).build().toRpcServiceName();
+        //使用Zookeeper发现
+        //获取请求的 服务端  （该服务端有对应的请求接口）
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceClassName);
+
+        return inetSocketAddress;
     }
 }

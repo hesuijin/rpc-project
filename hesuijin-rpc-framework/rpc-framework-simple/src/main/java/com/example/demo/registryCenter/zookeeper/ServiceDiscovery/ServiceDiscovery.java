@@ -14,7 +14,7 @@ public interface ServiceDiscovery {
 
     /**
      * 获取远程服务地址
-     * @param rpcServiceClassName 包含className（interfaceName）服务接口名称 com.example.demo.HelloService
+     * @param rpcServiceClassName 包含className（interfaceName）服务的接口类名称如 com.example.demo.HelloService
      * @return
      */
     InetSocketAddress lookupService(String rpcServiceClassName);

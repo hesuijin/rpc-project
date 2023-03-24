@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.common.enums.RpcConstant;
 import com.example.common.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import com.example.demo.registryCenter.zookeeper.CuratorUtils;
 import com.example.demo.remotingCenter.transport.socket.SocketRpcServer;
@@ -24,14 +25,17 @@ public class CustomShutdownHook {
         return CUSTOM_SHUTDOWN_HOOK;
     }
 
+    /**
+     * 停止线程池
+     */
     public void clearAll() {
-        log.info("addShutdownHook for clearAll");
-        //,如果我们之前定义了一系列的线程池供程序本身使用
-        // 那么就可以在这个最后执行的线程中把这些线程池优雅的关闭掉.
+        //为JDK方法 RunTime.getRunTime().addShutdownHook的作用就是在JVM销毁前执行的一个线程
+        //如果我们之前定义了一系列的线程池供程序本身使用,我们可以利用这个性质,就可以在这个最后执行的线程中把这些线程池优雅的关闭掉
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            log.info("addShutdownHook for clearAll");
             try {
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), SocketRpcServer.PORT);
-                //清除 zk 中该 服务存在的节点 /192.168.137.1:9998
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), RpcConstant.SocketRpcServer.PORT);
+                //清除 zk 中该 服务存在的节点
                 CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
             } catch (UnknownHostException ignored) {
             }
