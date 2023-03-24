@@ -11,17 +11,18 @@ import com.example.common.entity.RpcServiceProperties;
 public interface ServiceProvider {
 
     /**
-     * @param rpcServiceProperties service related attributes
-     * @return service object
-     */
-    Object getService(RpcServiceProperties rpcServiceProperties);
-
-    /**
-     * @param service              service object
-     * @param rpcServiceProperties service related attributes
+     * 注册功能
+     * @param service              需要放到内存缓存的实例对象
+     * @param rpcServiceProperties key；接口三要素：接口信息(接口位置+接口类名) - 接口所在组 -接口版本号
      */
     void publishService(Object service, RpcServiceProperties rpcServiceProperties);
 
+    /**
+     * 发现功能
+     * @param rpcServiceProperties  key：接口三要素：接口信息(接口位置+接口类名) - 接口所在组 -接口版本号
+     * @return 获取内存缓存的实例对象
+     */
+    Object getService(RpcServiceProperties rpcServiceProperties);
 }
 
 
