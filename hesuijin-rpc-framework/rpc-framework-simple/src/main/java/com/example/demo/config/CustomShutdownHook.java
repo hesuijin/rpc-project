@@ -3,7 +3,6 @@ package com.example.demo.config;
 import com.example.common.enums.RpcConstant;
 import com.example.common.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import com.example.demo.registryCenter.zookeeper.CuratorUtils;
-import com.example.demo.remotingCenter.transport.socket.SocketRpcServer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;

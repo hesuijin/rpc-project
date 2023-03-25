@@ -18,27 +18,27 @@ import java.lang.reflect.Method;
 @Slf4j
 public class RpcRequestHandler {
 
+    //服务提供类 （提供注册与发现功能）
     private final ServiceProvider serviceProvider;
-
     public RpcRequestHandler() {
         serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);
     }
 
     /**
-     * Processing rpcRequest: call the corresponding method, and then return the method
+     * @param rpcRequest  客户端请求对象体
+     * @return 最终响应结果
      */
     public Object handle(RpcRequest rpcRequest) {
+        //获取实例对象
         Object service = serviceProvider.getService(rpcRequest.toRpcProperties());
         Object result = invokeTargetMethod(rpcRequest, service);
         return result;
     }
 
     /**
-     * get method execution results
-     *
-     * @param rpcRequest client request
-     * @param service    service object
-     * @return the result of the target method execution
+     * @param rpcRequest 客户端请求对象体
+     * @param service    实例对象
+     * @return 执行相应方法响应结果
      */
     private Object invokeTargetMethod(RpcRequest rpcRequest, Object service) {
         Object result;

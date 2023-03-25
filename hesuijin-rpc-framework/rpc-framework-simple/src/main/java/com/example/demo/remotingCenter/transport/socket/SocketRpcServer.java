@@ -50,7 +50,7 @@ public class SocketRpcServer {
     }
 
     /**
-     * 服务端启动
+     * SocketServer 服务端启动
      */
     public void start() {
         try (ServerSocket server = new ServerSocket()) {
@@ -60,7 +60,9 @@ public class SocketRpcServer {
             //当服务进行关闭的时候  注册的节点需要删除 并停用该服务线程池
             CustomShutdownHook.getCustomShutdownHook().clearAll();
             Socket socket;
-            //当开始接收请求时  则线程池使用某线程执行相关逻辑
+            //当开始接收请求时  则线程池使用某线程执行相关逻辑：
+            //从连接请求队列中取出一个客户的连接请求，然后创建与客户连接的Socket对象，
+            //接下来，服务器从Socket对象中获得输入流和输出流，就能与客户交换数据。
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
                 //线程池 执行SocketRpcRequestHandlerRunnable

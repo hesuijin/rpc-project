@@ -17,7 +17,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @Description: RpcClientProxy代理类 于重写的invoke的逻辑中执行特殊的逻辑
+ * @Description: RpcClientProxy代理类
+ * 使用泛型获取原类的对应的代理类 ： (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, this)
+ * 后续执行代理类对应实例对象的任何方法都改为使用重写的invoke方法。
+ * 重写的invoke的逻辑中执行特殊的逻辑。
  * @Author HeSuiJin
  * @Date 2021/4/5
  */
@@ -83,6 +86,7 @@ public class RpcClientProxy  implements InvocationHandler {
                 .version(rpcServiceProperties.getVersion())
                 .build();
         RpcResponse<Object> rpcResponse = null;
+        //TODO 新增NettyRpcClient后再打开该注释
 //        if (rpcRequestTransport instanceof NettyRpcClient) {
 //            CompletableFuture<RpcResponse<Object>> completableFuture = (CompletableFuture<RpcResponse<Object>>) rpcRequestTransport.sendRpcRequest(rpcRequest);
 //            rpcResponse = completableFuture.get();

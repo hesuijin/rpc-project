@@ -6,7 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 
 /**
- * @Description:
+ * @Description: 客户端请求对象体 包含RpcServiceProperties（接口三要素）
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
