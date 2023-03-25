@@ -16,6 +16,20 @@ import java.net.Socket;
 @Slf4j
 public class SocketHelloServer {
 
+//    ServerSocket server（Socket服务端）
+//    Socket socket = server.accept()；
+//
+//    Socket服务端程序在listen某个端口并accept某个连接请求后，会生成一个新的socket来对该请求进行处理。
+//    我们可以把这个socket称为Socket客户端对象。
+//
+//    我们可以认为server.accept()获取的Socket客户端对象是新的Socket对象，
+//    每一次获取到新的Socket对象，实际上不会影响到前面已经获取的Socket客户端对象。
+//
+//    Socket socket = null;
+//    while ((socket = server.accept()) != null) {
+//
+//    }
+
 //    try-with-resource语句:
 //        try括号中包含资源声明了一种或多种资源，并且保证每个声明了的资源在语句结束时都会被自动关闭，
 //        那么如何定义资源，任何实现了java.lang.AutoCloseable（Closeable）接口的对象，都可以在try-with-resource语句中使用，

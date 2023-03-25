@@ -80,11 +80,12 @@ public class SocketRpcClient implements RpcRequestTransport {
      * @return
      */
     public  InetSocketAddress getInetSocketAddress(RpcRequest rpcRequest){
-        // rpcServiceClassName ：包含className（interfaceName）服务接口类名称 com.example.demo.HelloService
+        // rpcServiceClassName(接口三要素素) ：
+        // 包含className（interfaceName）服务接口类名称 com.example.demo.HelloService 以及 group + version
         String rpcServiceClassName = RpcServiceProperties.builder().serviceName(rpcRequest.getInterfaceName())
                 .group(rpcRequest.getGroup()).version(rpcRequest.getVersion()).build().toRpcServiceName();
         //使用Zookeeper发现
-        //获取请求的 服务端  （该服务端有对应的请求接口）
+        //获取请求的Socket服务端  （该服务端有对应的请求接口）
         InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceClassName);
 
         return inetSocketAddress;

@@ -5,7 +5,7 @@ import com.example.common.extension.SPI;
 import java.net.InetSocketAddress;
 
 /**
- * @Description:服务发现
+ * @Description:服务发现类
  * @Author HeSuiJin
  * @Date 2021/4/2
  */
@@ -13,9 +13,9 @@ import java.net.InetSocketAddress;
 public interface ServiceDiscovery {
 
     /**
-     * 获取远程服务地址
-     * @param rpcServiceClassName 包含className（interfaceName）服务的接口类名称如 com.example.demo.HelloService
-     * @return
+     * 获取入参接口三要素下的全部子节点（Socket服务端的IP端口）
+     * @param rpcServiceClassName 接口三要素
+     * @return  Socket服务端的IP端口
      */
     InetSocketAddress lookupService(String rpcServiceClassName);
 }

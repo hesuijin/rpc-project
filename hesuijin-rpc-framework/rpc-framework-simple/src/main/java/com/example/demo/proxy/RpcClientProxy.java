@@ -98,15 +98,23 @@ public class RpcClientProxy  implements InvocationHandler {
         return rpcResponse.getData();
     }
 
+    /**
+     * 检查响应结果
+     * @param rpcResponse
+     * @param rpcRequest
+     */
     private void check(RpcResponse<Object> rpcResponse, RpcRequest rpcRequest) {
+        //响应是否为空
         if (rpcResponse == null) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_INVOCATION_FAILURE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
         }
 
+        //请求唯一标识 是否正确
         if (!rpcRequest.getRequestId().equals(rpcResponse.getRequestId())) {
             throw new RpcException(RpcErrorMessageEnum.REQUEST_NOT_MATCH_RESPONSE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
         }
 
+        //响应结果是否成功
         if (rpcResponse.getCode() == null || !rpcResponse.getCode().equals(RpcResponseCodeEnum.SUCCESS.getCode())) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_INVOCATION_FAILURE, INTERFACE_NAME + ":" + rpcRequest.getInterfaceName());
         }

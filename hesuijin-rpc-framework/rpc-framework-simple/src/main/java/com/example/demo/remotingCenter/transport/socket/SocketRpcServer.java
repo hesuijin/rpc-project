@@ -60,9 +60,13 @@ public class SocketRpcServer {
             //当服务进行关闭的时候  注册的节点需要删除 并停用该服务线程池
             CustomShutdownHook.getCustomShutdownHook().clearAll();
             Socket socket;
-            //当开始接收请求时  则线程池使用某线程执行相关逻辑：
             //从连接请求队列中取出一个客户的连接请求，然后创建与客户连接的Socket对象，
             //接下来，服务器从Socket对象中获得输入流和输出流，就能与客户交换数据。
+
+            //我们可以认为server.accept()获取的Socket客户端对象是新的Socket对象，
+            //每一次获取到新的Socket对象，实际上不会影响到前面已经获取的Socket客户端对象。
+
+            //同时当开始接收请求时  则线程池使用某线程执行相关逻辑。
             while ((socket = server.accept()) != null) {
                 log.info("client connected [{}]", socket.getInetAddress());
                 //线程池 执行SocketRpcRequestHandlerRunnable
