@@ -2,7 +2,6 @@ package com.example.server.serviceImpl;
 
 import com.example.api.Hello;
 import com.example.api.HelloService;
-import com.example.demo.annotation.RpcService;
 import lombok.extern.slf4j.Slf4j;
 
 /**

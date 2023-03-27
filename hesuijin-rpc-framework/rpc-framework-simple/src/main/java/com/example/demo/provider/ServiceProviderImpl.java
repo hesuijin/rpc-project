@@ -74,7 +74,7 @@ public class ServiceProviderImpl implements ServiceProvider {
      * @param rpcServiceProperties service related attributes
      */
     @Override
-    public void publishService(Object serviceImplObject, RpcServiceProperties rpcServiceProperties) {
+    public void publishService(Object serviceImplObject, RpcServiceProperties rpcServiceProperties,int port) {
         try {
 
             //获取该接口的 interface + 接口所在包 + 名称 ：interface com.example.api.HelloService
@@ -86,7 +86,7 @@ public class ServiceProviderImpl implements ServiceProvider {
 
             //获取 本服务的 IP地址
             String host = InetAddress.getLocalHost().getHostAddress();
-            InetSocketAddress inetSocketAddress = new InetSocketAddress(host, RpcConstant.SocketRpcServer.PORT);
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(host, port);
 
             //对该接口信息进行注册  注册到zk中
             //入参1：接口所在包 加 名称           com.example.api.HelloService    (需要加上分组以及版本号)
